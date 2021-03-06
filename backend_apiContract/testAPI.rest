@@ -1,0 +1,36 @@
+GET http://localhost:3000/api/tasks/
+
+###
+
+GET http://localhost:3000/api/tasks/sleep
+
+###
+
+GET http://localhost:3000/api/task/603fddd176ed240de482e550
+
+###
+
+POST http://localhost:3000/api/task
+Content-Type: application/json
+
+{
+    "timeDelay": "0",
+    "url": "https://pbs.twmg.com/media/EtXfpgGWYAEIa7y?format=jpg&name=small"
+}
+
+###
+
+PATCH http://localhost:3000/api/task/603fddd176ed240de482e550
+Content-Type: application/json
+
+{
+    "timeDelay": "60000"
+}
+
+###
+
+PATCH http://localhost:3000/api/task/cancel/6043ca683db2ec1a2c9a6aba
+Content-Type: application/json
+
+{
+}
