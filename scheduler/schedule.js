@@ -5,7 +5,7 @@ const taskDB = require("./models/taskDB");
 const ObjectID = require("mongodb").ObjectID;
 const { exec } = require('child_process');
 
-const getTask = (id) => {
+const getTask = async (id) => {
     if (!ObjectID.isValid(id)) {
         return null;
 	}
@@ -13,11 +13,24 @@ const getTask = (id) => {
 	return currentTask;
 };
 
-const schedule = async(id) => {
+const schedule = async (id) => {
     const task= await getTask(id);
+    d = task.execTime;
+    Year = d.getFullYear();
+    Month = (d.getMonth()+1); // Has to be incremented by 1
+    date = d.getDate();
+    hours = d.getHours();
+    minutes = d.getMinutes();
+    seconds = d.getSeconds();
 
+    console.log(`${Year}-${Month}-${date}-${hours}-${minutes}-${seconds}`)
+
+    exactTime = `${Year}${Month}${date}${hours}${minutes}.${seconds}`
+    console.log(exactTime)
+
+    command = `echo "node taskRunner.js ${id}" | at -t ${exactTime}`;
     //schedule logic
-    exec('cat *.js missing_file | wc -l', (error, stdout, stderr) => {
+    exec(command, (error, stdout, stderr) => {
         if (error) {
           console.error(`exec error: ${error}`);
           return;
@@ -28,7 +41,21 @@ const schedule = async(id) => {
     });
 };
 
-const cancel = (id) => {};
+const cancel = async (id) => {
+  const task = await getTask(id); 
+  jobID = task.procID;
+  console.log(jobID);
+  command = `atrm ${jobID}`;
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`exec error: ${error}`);
+      return;
+    }
+    console.log(`stdout: ${stdout}`);
+    task.status = "cancelled";
+    task.save();
+  });
+};
 
 // DataBase Connection
 mongoose.connect(process.env.DATABASE_URL, {
@@ -53,8 +80,8 @@ db.once("open", () => {
   });
 
   consumer.on("message", function (message) {
-    console.log(message);
-    const res = message.split(" ");
+    const res = message.value.toString().split(" ");
+    // console.log(`${res[0]} ${res[1]}`)
     if (res[1] === "POST") {
       schedule(res[0]);
     } else {
