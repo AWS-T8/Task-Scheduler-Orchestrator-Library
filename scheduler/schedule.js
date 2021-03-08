@@ -6,7 +6,7 @@ const ObjectID = require("mongodb").ObjectID;
 const { exec } = require('child_process');
 
 const getTask = async (id) => {
-    if (!ObjectID.isValid(id)) {
+  if (!ObjectID.isValid(id)) {
         return null;
 	}
 	const currentTask = await taskDB.findById(id);
@@ -15,6 +15,9 @@ const getTask = async (id) => {
 
 const schedule = async (id) => {
     const task= await getTask(id);
+    if(!task){
+      return;
+    }
     d = task.execTime;
     Year = d.getFullYear();
     Month = (d.getMonth()+1); // Has to be incremented by 1
@@ -36,13 +39,16 @@ const schedule = async (id) => {
           return;
         }
         console.log(`stdout: ${stdout}`);
-        task.procID= stdout;
+        task.procID= stdout.match(/\d+/)[0];
         task.save();
     });
 };
 
 const cancel = async (id) => {
   const task = await getTask(id); 
+  if(!task){
+    return;
+  }
   jobID = task.procID;
   console.log(jobID);
   command = `atrm ${jobID}`;
