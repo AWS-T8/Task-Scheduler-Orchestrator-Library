@@ -3,8 +3,8 @@
 FROM node:14-slim
 
 # Create App Directory
-RUN mkdir -p /usr/src/app/backendApiContract
-WORKDIR /usr/src/app/backendApiContract
+RUN mkdir -p /usr/src/app/scheduler
+WORKDIR /usr/src/app/scheduler
 
 # Install Dependencies
 COPY package*.json ./
@@ -15,6 +15,6 @@ RUN npm install --silent
 COPY . .
 
 # Exports
-EXPOSE 3000
+# EXPOSE 3000
 
-CMD ["npm","start"]
+CMD ["node","./schedule.js"]

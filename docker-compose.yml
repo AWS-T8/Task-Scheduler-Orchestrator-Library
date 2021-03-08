@@ -12,6 +12,16 @@ services:
       - kafka
     networks:
       - aws-t8-network
+  schdeuler:
+    image: schdeuler-img
+    container_name: scheduler
+    depends_on:
+      - mongo
+      - zookeeper
+      - kafka
+      - apiContract
+    networks:
+      - aws-t8-network
   mongo:
     image: mongo:3.6.19-xenial
     container_name: mongo
@@ -40,8 +50,8 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: localhost
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
-      KAFKA_DELETE_TOPIC_ENABLE: 'true'
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
 networks:
   aws-t8-network:
     driver: bridge

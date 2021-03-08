@@ -8,12 +8,25 @@ const app = express();
 const PORT = 3000;
 
 const kafka = require("kafka-node");
-const defaultTopicName = "test-topic";
-const kafkaHost = "localhost:9092";
+const defaultTopicName = "aws-kafka";
+const kafkaHost = process.env.KAFKA_URL;
 
 const client = new kafka.KafkaClient({
   kafkaHost: kafkaHost,
 });
+
+const topics = [
+  {
+    topic: defaultTopicName,
+    partitions: 1,
+    replicationFactor: 1,
+  },
+];
+
+client.createTopics(topics, (err, result) => {
+  // console.log()
+});
+
 const producer = new kafka.HighLevelProducer(client);
 // const consumer = new kafka.Consumer(client, [{ topic: defaultTopicName }], {
 //   groupId: 'node-express-kafka-group'

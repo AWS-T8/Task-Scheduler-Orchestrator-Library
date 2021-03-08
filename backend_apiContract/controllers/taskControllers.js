@@ -68,6 +68,16 @@ exports.updateTask = async (req, res) => {
   try {
     // Updating the document
     res.task.save().then(() => {
+      const defaultTopicName = req.defaultTopicName;
+      const topicName = req.body.topicName || defaultTopicName;
+      const producer = req.producer;
+
+      const payloads = [
+        { topic: topicName, messages: `${res.task._id} UPDATE` },
+      ];
+
+      producer.send(payloads, function (err, data) {});
+
       res.status(200).json({ success: true });
       res.end();
     });
