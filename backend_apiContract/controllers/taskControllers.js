@@ -62,6 +62,11 @@ exports.updateTask = async (req, res) => {
   if (req.body.timeDelay === null) {
     return res.status(406).json({ message: "Not Acceptable" });
   }
+
+  if (res.task.status !== "scheduled") {
+    return res.status(403).json({ message: "Task cannot be updated" });
+  }
+
   const currTime = new Date();
   const finalTime = new Date(currTime.getTime() + parseInt(req.body.timeDelay));
   res.task.execTime = finalTime;
