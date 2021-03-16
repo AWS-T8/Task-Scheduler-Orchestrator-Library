@@ -10,10 +10,8 @@ services:
       - mongo
       - zookeeper
       - kafka
-    networks:
-      - aws-t8-network
   schdeuler:
-    image: schdeuler-img
+    image: scheduler-img
     container_name: scheduler
     depends_on:
       - mongo

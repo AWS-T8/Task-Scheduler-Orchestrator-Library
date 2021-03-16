@@ -89,6 +89,7 @@ db.once("open", () => {
   console.log("Connected to Database");
 
   const defaultTopicName = "aws-kafka";
+  console.log(process.env.KAFKA_URL);
   const kafkaHost = process.env.KAFKA_URL;
 
   const client = new kafka.KafkaClient({
