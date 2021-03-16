@@ -2,11 +2,11 @@ GET http://localhost:3000/api/tasks/
 
 ###
 
-GET http://localhost:3000/api/tasks/sleep
+GET http://localhost:3000/api/tasks/saksham
 
 ###
 
-GET http://localhost:3000/api/task/603fddd176ed240de482e550
+GET http://localhost:3000/api/task/60508a0ae2e1ed3bd0577298
 
 ###
 
@@ -14,22 +14,22 @@ POST http://localhost:3000/api/task
 Content-Type: application/json
 
 {
-    "timeDelay": "120000",
-    "url": "testing call"
+    "timeDelay": "12",
+    "url": "saksham"
 }
 
 ###
 
-PATCH http://localhost:3000/api/task/604638f1e686aa7ac96266c7
+PATCH http://localhost:3000/api/task/60508a0ae2e1ed3bd0577299
 Content-Type: application/json
 
 {
-    "timeDelay": "00"
+    "timeDelay": "123"
 }
 
 ###
 
-PATCH http://localhost:3000/api/task/cancel/604e0e4e1e46dc73227b569c
+PATCH http://localhost:3000/api/task/cancel/60508a0ae2e1ed3bd057729c
 Content-Type: application/json
 
 {

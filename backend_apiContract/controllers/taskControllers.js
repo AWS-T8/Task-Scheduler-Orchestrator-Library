@@ -59,10 +59,14 @@ exports.getTaskById = (req, res) => {
 };
 
 exports.updateTask = async (req, res) => {
-  if (req.body.timeDelay === null) {
+  if (req.body.timeDelay === null || req.body.timeDelay.length === 0) {
     return res.status(406).json({ message: "Not Acceptable" });
   }
 
+  if (req.body.timeDelay.match(/^[0-9]+$/) === null) {
+    return res.status(406).json({ message: "Not Acceptable" });
+  }
+  
   if (res.task.status !== "scheduled") {
     return res.status(403).json({ message: "Task cannot be updated" });
   }
