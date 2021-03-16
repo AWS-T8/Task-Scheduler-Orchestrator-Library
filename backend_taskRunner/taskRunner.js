@@ -1,5 +1,7 @@
 const axios = require("axios");
-require("dotenv").config({ path: "/media/sanskaragarwal/OS/Users/sansk/Desktop/AWS-T8/backend_taskRunner/.env" });
+require("dotenv").config({
+  path: "/home/sanskar/AWS-T8/backend_taskRunner/.env",
+});
 const mongoose = require("mongoose");
 const taskDB = require("./models/taskDB");
 const ObjectID = require("mongodb").ObjectID;
@@ -7,6 +9,7 @@ const ObjectID = require("mongodb").ObjectID;
 const { exec } = require("child_process");
 
 // DataBase Connection
+
 mongoose.connect(process.env.DATABASE_URL, {
   useCreateIndex: true,
   useNewUrlParser: true,
@@ -46,28 +49,37 @@ const execTask = async (id) => {
   });
 
   currentTask.save().then((task) => {
-    axios.get(process.env.TEST_API).then((result) => {
-      if (result.status === 200) {
-        task.status = "completed";
-      } else {
-        task.status = "failed";
-      }
-      task.save().then((res) => {
-        const completeTime = new Date().toLocaleString("en-US", {
-          timeZone: "Asia/Kolkata",
+    axios
+      .get(task.url)
+      .then((result) => {
+        if (result.status === 200) {
+          task.status = "completed";
+        } else {
+          task.status = "failed";
+        }
+        task.save().then((res) => {
+          const completeTime = new Date().toLocaleString("en-US", {
+            timeZone: "Asia/Kolkata",
+          });
+          const output = `schTime: ${schTime} || execTime: ${execTime} || completeTime: ${completeTime}\n`;
+          console.log(output);
+          const command = `printf "${output}" >> ${process.env.OUTPUT_PATH}`;
+          exec(command, (error, stdout, stderr) => {
+            if (error) {
+              console.error(`exec error: ${error}`);
+              return;
+            }
+            db.close();
+            process.exit(0);
+          });
         });
-        const output = `schTime: ${schTime} || execTime: ${execTime} || completeTime: ${completeTime}\n`;
-        console.log(output);
-        const command = `printf "${output}" >> ${process.env.OUTPUT_PATH}`;
-        exec(command, (error, stdout, stderr) => {
-          if (error) {
-            console.error(`exec error: ${error}`);
-            return;
-          }
+      })
+      .catch((err) => {
+        task.status = "failed";
+        task.save().then((res) => {
           db.close();
           process.exit(0);
         });
       });
-    });
   });
 };
