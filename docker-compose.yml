@@ -1,25 +1,6 @@
 version: "3"
 
 services:
-  apiContract:
-    image: api-contract-img
-    container_name: apiContract
-    ports:
-      - "3000:3000"
-    depends_on:
-      - mongo
-      - zookeeper
-      - kafka
-  schdeuler:
-    image: scheduler-img
-    container_name: scheduler
-    depends_on:
-      - mongo
-      - zookeeper
-      - kafka
-      - apiContract
-    networks:
-      - aws-t8-network
   mongo:
     image: mongo:3.6.19-xenial
     container_name: mongo
