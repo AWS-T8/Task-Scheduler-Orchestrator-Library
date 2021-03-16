@@ -13,7 +13,7 @@ const kafkaHost = process.env.KAFKA_URL;
 
 const client = new kafka.KafkaClient({
   kafkaHost: kafkaHost,
-  idleConnection: 24 * 60 * 60 * 1000
+  idleConnection: 24 * 60 * 60 * 1000,
 });
 
 const topics = [
@@ -74,5 +74,10 @@ producer.on("error", function (error) {
 });
 
 // API server
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
-// module.exports = app;
+
+console.log(process.env.TEST);
+if (process.env.TEST === "server") {
+  app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+} else {
+  module.exports = app;
+}

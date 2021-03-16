@@ -1,11 +1,13 @@
 const request = require("supertest");
+require("dotenv").config({ path: "../.env" });
 // const express = require("express");
+process.env.TEST = "test";
 const app = require("../server.js");
 const taskDB = require("../models/taskDB");
 
 const taskURL = "/api/task";
 const tasksURL = "/api/tasks";
-
+const id = "60508a0ae2e1ed3bd057729d";
 const connectDB = require("../configure/db.js");
 beforeAll(async () => {
   await connectDB();
@@ -37,7 +39,7 @@ describe("GET Requests to /api/tasks", () => {
       .then(async (tasks) => {
         await request(app)
           .get(`${tasksURL}`)
-          .expect(2041)
+          .expect(200)
           .expect("Content-Type", /json/)
           .then((res) => JSON.stringify(res.body))
           .then((body) => {
@@ -77,24 +79,14 @@ describe("GET Requests to /api/tasks", () => {
 
 describe("GET Requests to /api/task", () => {
   test("GET Single Task /api/task/:taskid", async () => {
-    const getRandomTask = new Promise(async () => {
-      const task = await taskDB.aggregate([{ $sample: { size: 1 } }]);
-      return { id: task._id, status: task.status };
-    });
-
-    getRandomTask.then(async (props) => {
-      console.log(props.id);
-      const id = props.id;
-      const status = props.status;
-
-      await request(app)
-        .get(`${taskURL}/${id}`)
-        .expect("Content-Type", /json/)
-        .expect(201)
-        .then((res) => {
-          expect(res.body).toHaveProperty("status", status);
-        });
-    });
+    console.log(id);
+    await request(app)
+      .get(`${taskURL}/${id}`)
+      .expect("Content-Type", /json/)
+      .expect(200)
+      .then((res) => {
+        expect(res.body).toHaveProperty("status");
+      });
   });
 
   test("GET Single Task Invalid Id /api/task/:taskid", async () => {
@@ -108,7 +100,7 @@ describe("GET Requests to /api/task", () => {
 describe("POST Requests", () => {
   test("POST Task (201)", async () => {
     await request(app)
-      .post("/api/task/")
+      .post(`${taskURL}`)
       .send({
         timeDelay: "5000",
         url: "https://xmeme-saksham9575.herokuapp.com/memes",
@@ -135,35 +127,62 @@ describe("POST Requests", () => {
   });
 });
 
-// describe("PATCH Requests", () => {
-//   let ranTask;
-//   beforeEach(async (done) => {
-//     const getRandomTask = new Promise(async () => {
-//       const task = await taskDB.aggregate([{ $sample: { size: 1 } }]);
-//       // id= task._id;
-//       console.log(task);
-//       return task;
-//     });
-//     await getRandomTask.then((task) => {
-//       console.log("HELLO");
-//       ranTask = task;
-//       return done();
-//     });
-//   });
+describe("PATCH Requests", () => {
+  test("PATCH Update Task (200)", async () => {
+    await request(app)
+      .patch(`/api/task/${id}`)
+      .send({
+        timeDelay: "5000",
+      })
+      .expect("Content-Type", /json/)
+      .expect(200)
+      .then((res) => {
+        expect(res.body).toHaveProperty("success", true);
+      });
+  });
 
-//   describe("PATCH To Requests", () => {
-//     test("PATCH Update Task (200)", async () => {
-//       console.log(ranTask._id);
-//       await request(app)
-//         .patch(`/api/task/${ranTask._id}`)
-//         .send({
-//           timeDelay: "10000",
-//         })
-//         .expect("Content-Type", /json/)
-//         .expect(200)
-//         .then((res) => {
-//           expect(res.body).toHaveProperty("success", "true");
-//         });
-//     });
-//   });
-// });
+  test("PATCH Update Task (406)", async () => {
+    await request(app)
+      .patch(`/api/task/${id}`)
+      .send({
+        timeDelay: "",
+      })
+      .expect("Content-Type", /json/)
+      .expect(406)
+      .then((res) => {
+        expect(res.body).toHaveProperty("message", "Not Acceptable");
+      });
+  });
+
+  test("PATCH Cancel Task (200)", async () => {
+    await request(app)
+      .patch(`/api/task/cancel/${id}`)
+      .expect("Content-Type", /json/)
+      .expect(200)
+      .then((res) => {
+        expect(res.body).toHaveProperty("success", true);
+      });
+  });
+
+  test("PATCH Cancel Task (403)", async () => {
+    await request(app)
+      .patch(`/api/task/cancel/${id}`)
+      .expect("Content-Type", /json/)
+      .expect(403)
+      .then((res) => {
+        expect(res.body).toHaveProperty("message", "Task cannot be cancelled");
+      });
+  });
+
+  test("PATCH Cancel Task (404)", async () => {
+    await request(app)
+      .patch(`/api/task/cancel/sanskar`)
+      .expect("Content-Type", /json/)
+      .expect(404)
+      .then((res) => {
+        expect(res.body).toHaveProperty("message", "Task not found");
+      });
+  });
+
+
+});
