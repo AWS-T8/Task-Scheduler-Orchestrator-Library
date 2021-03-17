@@ -1,6 +1,6 @@
 #  Dockerfile for Node Express Backend
 
-FROM node:14-slim
+FROM node:latest
 
 # Create App Directory
 RUN mkdir -p /usr/src/app/backendApiContract

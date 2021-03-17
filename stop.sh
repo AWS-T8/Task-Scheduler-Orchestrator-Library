@@ -3,10 +3,11 @@ sudo docker rm $(sudo docker stop $(sudo docker ps -a -q -f ancestor=api-contrac
 echo '\nSleeping for 5 seconds...\n'
 sleep 5
 echo '\nStoping Scheduler...\n'
-# sudo docker rm $(sudo docker stop $(sudo docker ps -a -q -f ancestor=scheduler-img))
-cd /home/sanskar/AWS-T8/scheduler
-forever stop schedule.js
-cd ..
+sudo docker rm $(sudo docker stop $(sudo docker ps -a -q -f ancestor=scheduler-img))
+echo '\nSleeping for 5 seconds...\n'
+sleep 5
+echo '\nStoping TaskRunner...\n'
+forever stop /home/sanskar/AWS-T8/backend_taskRunner/consumer.js
 echo '\nSleeping for 5 seconds...\n'
 sleep 5
 echo '\nStoping Kafka & Mongo...\n'

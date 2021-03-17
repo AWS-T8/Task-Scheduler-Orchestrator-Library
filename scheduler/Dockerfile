@@ -1,10 +1,16 @@
 #  Dockerfile for Node Express Backend
-
-FROM node:14-slim
+FROM ubuntu
 
 # Create App Directory
 RUN mkdir -p /usr/src/app/scheduler
 WORKDIR /usr/src/app/scheduler
+
+#Install packages
+RUN apt-get -y update
+RUN apt install -y curl
+RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y nodejs
+RUN apt-get -y install at 
 
 # Install Dependencies
 COPY package*.json ./
@@ -14,7 +20,6 @@ RUN npm install --silent
 # Copy app source code
 COPY . .
 
-# Exports
-# EXPOSE 3000
+RUN chmod a+x /usr/src/app/scheduler/start.sh
 
-CMD ["node","./schedule.js"]
+CMD ["/usr/src/app/scheduler/start.sh"]
