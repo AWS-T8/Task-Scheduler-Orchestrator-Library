@@ -1,15 +1,11 @@
 const axios = require('axios');
 require('dotenv').config({
-	path: '/home/sanskar/AWS-T8/backend_taskRunner/.env',
+	path: './.env',
 });
 const mongoose = require('mongoose');
 const taskDB = require('./models/taskDB');
 const ObjectID = require('mongodb').ObjectID;
 const fs = require('fs');
-
-const { exec } = require('child_process');
-
-// DataBase Connection
 
 mongoose.connect(process.env.DATABASE_URL, {
 	useCreateIndex: true,
@@ -88,15 +84,6 @@ const execTask = async (id) => {
 						status: res.status,
 					};
 					writeLog(taskLog);
-					// const command = `printf "${output}" >> ${process.env.OUTPUT_PATH}`;
-					// exec(command, (error, stdout, stderr) => {
-					// 	if (error) {
-					// 		console.error(`exec error: ${error}`);
-					// 		return;
-					// 	}
-					// 	db.close();
-					// 	process.exit(0);
-					// });
 				});
 			})
 			.catch((err) => {

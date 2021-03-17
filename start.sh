@@ -11,6 +11,7 @@ sudo docker run --network=host -d scheduler-img
 echo '\nSleeping for 5 seconds...\n'
 sleep 5
 echo '\nStarting taskRunner...\n'
-forever start /home/sanskar/AWS-T8/backend_taskRunner/consumer.js
-echo '\nSleeping for 2 seconds...\n'
+sudo docker run -d --network=host -v /home/sanskar/AWS-T8/backend_taskRunner/logs:/usr/src/app/taskRunner/logs task-runner-img
+echo '\nSleeping for 5 seconds...\n'
+sleep 5
 echo '\nAll Services Started!\n'

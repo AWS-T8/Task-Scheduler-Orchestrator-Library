@@ -5,6 +5,7 @@ const defaultTopicName = 'sch-task';
 const kafkaHost = process.env.KAFKA_URL;
 const { exec } = require('child_process');
 
+
 const client = new kafka.KafkaClient({
 	kafkaHost: kafkaHost,
 });
