@@ -2,21 +2,29 @@ const axios = require("axios");
 require("dotenv").config({
   path: "./.env",
 });
-
+const mongoose = require("mongoose");
 const taskDB = require("./models/taskDB");
 const ObjectID = require("mongodb").ObjectID;
 const fs = require("fs");
 
-/**
- * @GlobalDB needs to verified
- */
-const args = process.argv.slice(2);
-if (args.length === 0) {
-  db.close();
-  process.exit(0);
-}
-const id = args[0];
-execTask(id);
+mongoose.connect(process.env.DATABASE_URL, {
+  useCreateIndex: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+const db = mongoose.connection;
+db.on("error", (err) => console.error(err));
+db.once("open", () => {
+  console.log("Connected to Database");
+
+  const args = process.argv.slice(2);
+  if (args.length === 0) {
+    db.close();
+    process.exit(0);
+  }
+  const id = args[0];
+  execTask(id);
+});
 
 const writeLog = async (taskLog) => {
   let data = await JSON.stringify(taskLog, null, 2);
@@ -54,8 +62,11 @@ const execTask = async (id) => {
   });
 
   currentTask.save().then((task) => {
+    const config = {
+      timeout: 930000,
+    };
     axios
-      .get(task.url)
+      .get(task.url, config)
       .then((result) => {
         if (result.status === 200) {
           task.status = "completed";

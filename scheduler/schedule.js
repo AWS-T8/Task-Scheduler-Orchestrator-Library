@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const taskDB = require("./models/taskDB");
 const ObjectID = require("mongodb").ObjectID;
 const { exec } = require("child_process");
+const recover = require("./recover.js");
 
 const format = (str) => {
   if (str.length < 2) {
@@ -37,15 +38,38 @@ const schedule = async (id) => {
   console.log(`execute at: ${exactTime}`);
 
   /**
-   * @Sanskar
-   * Logic for seconds accuracy
-   * - We can find the current time using Date library
-   * - If the task is scheduled in the next minute (then sleep for seconds stored in the above variable)
-   * - If the task is scheduled in the current minute (then sleep for (seconds-current.seconds))
-   */
-
+	 * - Logic for seconds accuracy
+	 * - We can find the current time using Date library
+	   - if diff<0:
+			sleep=0;
+	   - if diff>=60
+			sleep= seconds
+	   - if diff<60
+			if(curr_min!=exe_min)
+				sleep= seconds
+			else
+				sleep= exec_sec-curr_sec
+	 */
+  let curr_date = new Date();
+  let diff = d - curr_date;
+  let sleepTime = 0;
+  let execSecond = d.getSeconds();
+  let execMinute = d.getMinutes();
+  let curMinute = curr_date.getMinutes();
+  let curSecond = curr_date.getSeconds();
+  if (diff <= 0) {
+    sleepTime = 0;
+  } else if (diff >= 60) {
+    sleepTime = execSecond;
+  } else {
+    if (curMinute != execMinute) {
+      sleepTime = seconds;
+    } else {
+      sleepTime = execSecond - curSecond;
+    }
+  }
   // command = `echo "node taskRunner.js ${id}" | at -t ${exactTime}`;
-  command = `echo "node ${process.env.PRODUCER_PATH} ${id}" | at -t ${exactTime}`;
+  command = `echo "sleep ${sleepTime} && node ${process.env.PRODUCER_PATH} ${id}" | at -t ${exactTime}`;
   // command = 'echo "ls -l > output.txt" | at now +1 minute';
   //schedule logic
   exec(command, (error, stdout, stderr) => {
@@ -91,8 +115,11 @@ mongoose.connect(process.env.DATABASE_URL, {
 });
 const db = mongoose.connection;
 db.on("error", (err) => console.error(err));
-db.once("open", () => {
+db.once("open", async () => {
   console.log("Connected to Database");
+
+  const allTasks = await taskDB.find({ status: "scheduled" });
+  recover(allTasks);
 
   const defaultTopicName = "aws-kafka";
   console.log(process.env.KAFKA_URL);

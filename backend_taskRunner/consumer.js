@@ -1,11 +1,10 @@
 var kafka = require("kafka-node");
 require("dotenv").config({ path: "./.env" });
-const connectDB = require("./configure/db.js");
+
 const defaultTopicName = "sch-task";
 const kafkaHost = process.env.KAFKA_URL;
 const { exec } = require("child_process");
 
-connectDB(); // Connecting DB in once in consumer
 const client = new kafka.KafkaClient({
   kafkaHost: kafkaHost,
 });
@@ -27,6 +26,7 @@ const consumer = new kafka.Consumer(client, [{ topic: defaultTopicName }], {
 });
 
 consumer.on("message", function (message) {
+  console.log(message);
   command = `node ./taskRunner.js ${message.value}`;
   exec(command, (error, stdout, stderr) => {
     if (error) {
