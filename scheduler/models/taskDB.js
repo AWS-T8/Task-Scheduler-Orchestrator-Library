@@ -21,6 +21,10 @@ const taskSchema = new mongoose.Schema({
 		type: String,
 		required: false,
 	},
+	startTime: {
+		type: String,
+		required: false
+	}
 });
 
 module.exports = mongoose.model('task', taskSchema);

@@ -59,7 +59,7 @@ const schedule = async (id) => {
   let curSecond = curr_date.getSeconds();
   if (diff <= 0) {
     sleepTime = 0;
-  } else if (diff >= 60) {
+  } else if (diff >= 60000) {
     sleepTime = execSecond;
   } else {
     if (curMinute != execMinute) {

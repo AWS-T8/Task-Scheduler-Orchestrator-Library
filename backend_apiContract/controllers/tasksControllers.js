@@ -12,6 +12,9 @@ exports.getTasks = async (req, res) => {
 					timeZone: 'Asia/Kolkata',
 				}),
 				status: task.status,
+				startTime: task.startTime ? task.startTime.toLocaleString('en-US', {
+					timeZone: 'Asia/Kolkata',
+				}) : "Yet to start"
 			};
 		});
 		res.status(200).json(tasks);
@@ -40,6 +43,9 @@ exports.getTasksByStatus = async (req, res) => {
 						timeZone: 'Asia/Kolkata',
 					}),
 					status: task.status,
+					startTime: task.startTime ? task.startTime.toLocaleString('en-US', {
+						timeZone: 'Asia/Kolkata',
+					}) : "Yet to start"
 				};
 			});
 			return res.status(200).json(tasks);
