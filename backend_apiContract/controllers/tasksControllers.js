@@ -8,7 +8,7 @@ exports.getTasks = async (req, res) => {
 			return {
 				id: task._id,
 				url: task.url,
-				execTime: task.execTime.toLocaleString('en-US', {
+				schTime: task.execTime.toLocaleString('en-US', {
 					timeZone: 'Asia/Kolkata',
 				}),
 				status: task.status,
@@ -39,7 +39,7 @@ exports.getTasksByStatus = async (req, res) => {
 				return {
 					id: task._id,
 					url: task.url,
-					execTime: task.execTime.toLocaleString('en-US', {
+					schTime: task.execTime.toLocaleString('en-US', {
 						timeZone: 'Asia/Kolkata',
 					}),
 					status: task.status,
