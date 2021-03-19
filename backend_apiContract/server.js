@@ -13,7 +13,6 @@ const kafkaHost = process.env.KAFKA_URL;
 
 const client = new kafka.KafkaClient({
   kafkaHost: kafkaHost,
-  idleConnection: 24 * 60 * 60 * 1000,
 });
 
 const topics = [

@@ -17,4 +17,4 @@ COPY . .
 # Exports
 EXPOSE 3000
 
-CMD ["node","start"]
+CMD ["node","server.js"]

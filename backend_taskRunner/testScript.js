@@ -16,7 +16,7 @@ fs.readdir('./logs', function (err, list) {
 		var scheduledTime = new Date(parsedData.scheduledTime);
 		var completetionTime = new Date(parsedData.completetionTime);
 		var executionTime = new Date(parsedData.executionTime);
-		var delay = (executionTime - scheduledTime) / 1000;
+		var delay = Math.abs((executionTime - scheduledTime) / 1000);
 		var time_to_complete = (completetionTime - executionTime) / 1000;
 		// console.log(`${parsedData.id} ${delay} ${time_to_complete}`);
 		sum_delay += delay;
