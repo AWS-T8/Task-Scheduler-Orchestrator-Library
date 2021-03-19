@@ -71,8 +71,6 @@ const schedule = async (id) => {
 	}
 	// command = `echo "node taskRunner.js ${id}" | at -t ${exactTime}`;
 	command = `echo "sleep ${sleepTime} && node ${process.env.PRODUCER_PATH} ${id}" | at -t ${exactTime}`;
-	console.log(command);
-	// command = 'echo "ls -l > output.txt" | at now +1 minute';
 	//schedule logic
 	exec(command, (error, stdout, stderr) => {
 		if (error) {
