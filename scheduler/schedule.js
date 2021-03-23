@@ -70,7 +70,8 @@ const schedule = async (id) => {
 		}
 	}
 	// command = `echo "node taskRunner.js ${id}" | at -t ${exactTime}`;
-	command = `echo "sleep ${sleepTime} && node ${process.env.PRODUCER_PATH} ${id}" | at -t ${exactTime}`;
+	const curlCommand = `curl --location --request GET '${process.env.PRODUCER_URL}/${id}'`;
+	command = `echo "sleep ${sleepTime} && ${curlCommand}" | at -t ${exactTime}`;
 	//schedule logic
 	exec(command, (error, stdout, stderr) => {
 		if (error) {
