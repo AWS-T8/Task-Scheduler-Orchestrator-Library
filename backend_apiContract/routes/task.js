@@ -1,19 +1,19 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
 // Importing Controllers
-const controllers = require('../controllers/taskControllers.js');
+const controllers = require("../controllers/taskControllers.js");
 
 // Getting One
-router.get('/:id', controllers.getTask, controllers.getTaskById);
+router.get("/:id", controllers.getTask, controllers.getTaskById);
 
 //Creating One
-router.post('/', controllers.postTask);
+router.post("/", controllers.postTask);
 
 //Updating One
-router.patch('/:id', controllers.getTask, controllers.updateTask);
+router.patch("/:id", controllers.getTask, controllers.updateTask);
 
 //Cancelling One
-router.patch('/cancel/:id', controllers.getTask, controllers.cancelTask);
+router.patch("/cancel/:id", controllers.getTask, controllers.cancelTask);
 
 module.exports = router;
