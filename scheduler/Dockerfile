@@ -20,6 +20,9 @@ RUN npm install --silent
 # Copy app source code
 COPY . .
 
+# Exports
+EXPOSE 8081
+
 RUN chmod a+x /usr/src/app/scheduler/start.sh
 
 CMD ["/usr/src/app/scheduler/start.sh"]

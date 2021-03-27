@@ -7,7 +7,7 @@ sudo docker run -d --network=host -v /home/sanskar/AWS-T8/backend_taskRunner/log
 echo '\nSleeping for 5 seconds...\n'
 sleep 5
 echo '\nStarting Scheduler...\n'
-sudo docker run --network=host -d scheduler-img
+sudo docker run -p 8081:8081 --network=host -d scheduler-img
 echo '\nSleeping for 5 seconds...\n'
 sleep 5
 echo '\nStarting API Server...\n'
