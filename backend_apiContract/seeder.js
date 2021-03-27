@@ -4,9 +4,9 @@
 */
 
 const dotenv = require("dotenv");
-const mongoose = require("mongoose");
 const testData = require("./testData.js");
 const Task = require("./models/taskDB.js");
+const User = require("./models/userDB");
 const connectDB = require("./configure/db.js");
 dotenv.config();
 
@@ -27,6 +27,7 @@ const importData = async () => {
 const destroyData = async () => {
   try {
     await Task.deleteMany();
+    await User.deleteMany();
     console.log("Data Destroyed!");
     process.exit();
   } catch (error) {

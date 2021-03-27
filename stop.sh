@@ -1,13 +1,16 @@
-echo 'Stoping API Server...\n'
+echo 'Stopping Frontend...\n'
+sudo docker rm $(sudo docker stop $(sudo docker ps -a -q -f ancestor=frontend-img))
+
+echo 'Stopping API Server...\n'
 sudo docker rm $(sudo docker stop $(sudo docker ps -a -q -f ancestor=api-contract-img))
 
-echo '\nStoping Scheduler...\n'
+echo '\nStopping Scheduler...\n'
 sudo docker rm $(sudo docker stop $(sudo docker ps -a -q -f ancestor=scheduler-img))
 
-echo '\nStoping TaskRunner...\n'
+echo '\nStopping TaskRunner...\n'
 sudo docker rm $(sudo docker stop $(sudo docker ps -a -q -f ancestor=task-runner-img))
 
-echo '\nStoping Kafka & Mongo...\n'
+echo '\nStopping Kafka & Mongo...\n'
 sudo docker-compose stop
 
 echo '\nAll Services Stopped!\n'

@@ -14,4 +14,8 @@ echo '\nStarting API Server...\n'
 sudo docker run -p 3000:3000 --network=host -d api-contract-img
 echo '\nSleeping for 10 seconds...\n'
 sleep 10
+echo '\nStarting Frontend...\n'
+sudo docker run -p 3001:3001 --network=host -d frontend-img
+echo '\nSleeping for 5 seconds...\n'
+sleep 5
 echo '\nAll Services Started!\n'

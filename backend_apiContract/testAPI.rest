@@ -1,27 +1,35 @@
-GET http://localhost:3000/api/tasks/
+GET http://13.68.242.205:3000/api/tasks/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNWY1ZGIyZDAzNDI2NjRkODM3ODlkYyIsInVzZXJuYW1lIjoiU2Fuc2thciIsImlhdCI6MTYxNjg2MjY0NX0.L3KJ0PmGQiNDJIdyjXFbI9oA_whJIGKlbgaz352HRLs
+
+#605f13c46109dc6f97438b97
 
 ###
 
-GET http://localhost:3000/api/tasks/saksham
+GET http://13.68.242.205:3000/api/tasks/completed
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNWY1ZGIyZDAzNDI2NjRkODM3ODlkYyIsInVzZXJuYW1lIjoiU2Fuc2thciIsImlhdCI6MTYxNjg2MjY0NX0.L3KJ0PmGQiNDJIdyjXFbI9oA_whJIGKlbgaz352HRLs
 
 ###
 
-GET http://localhost:3000/api/task/60508a0ae2e1ed3bd0577298
+GET http://13.68.242.205:3000/api/task/605f5dfbd034260d6a3789de
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNWY1ZGIyZDAzNDI2NjRkODM3ODlkYyIsInVzZXJuYW1lIjoiU2Fuc2thciIsImlhdCI6MTYxNjg2MjY0NX0.L3KJ0PmGQiNDJIdyjXFbI9oA_whJIGKlbgaz352HRLs
 
 ###
 
-POST http://localhost:3000/api/task
+POST http://13.68.242.205:3000/api/task
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNWY1ZGIyZDAzNDI2NjRkODM3ODlkYyIsInVzZXJuYW1lIjoiU2Fuc2thciIsImlhdCI6MTYxNjg2MjY0NX0.L3KJ0PmGQiNDJIdyjXFbI9oA_whJIGKlbgaz352HRLs
 
 {
-    "timeDelay": "12",
-    "url": "saksham"
+    "name": "Task 1",
+    "timeDelay": "0",
+    "url": "https://ck1row60f2.execute-api.us-east-2.amazonaws.com/default/function2"
 }
 
 ###
 
-PATCH http://localhost:3000/api/task/60508a0ae2e1ed3bd0577299
+PATCH http://13.68.242.205:3000/api/task/605f5dfbd034260d6a3789de
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNWY1ZGIyZDAzNDI2NjRkODM3ODlkYyIsInVzZXJuYW1lIjoiU2Fuc2thciIsImlhdCI6MTYxNjg2MjY0NX0.L3KJ0PmGQiNDJIdyjXFbI9oA_whJIGKlbgaz352HRLs
 
 {
     "timeDelay": "123"
@@ -29,8 +37,30 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:3000/api/task/cancel/60508a0ae2e1ed3bd057729c
+PATCH http://13.68.242.205:3000/api/task/cancel/605f5dfbd034260d6a3789de
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNWY1ZGIyZDAzNDI2NjRkODM3ODlkYyIsInVzZXJuYW1lIjoiU2Fuc2thciIsImlhdCI6MTYxNjg2MjY0NX0.L3KJ0PmGQiNDJIdyjXFbI9oA_whJIGKlbgaz352HRLs
+
 Content-Type: application/json
 
 {
+}
+
+###
+
+POST http://13.68.242.205:3000/api/user/register
+Content-Type: application/json
+
+{
+    "username": "Sanskar",
+    "password": "sanskar"
+}
+
+###
+
+POST http://13.68.242.205:3000/api/user/login
+Content-Type: application/json
+
+{
+    "username": "Sanskar",
+    "password": "sanskar"
 }

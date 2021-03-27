@@ -1,6 +1,5 @@
 require("dotenv").config({ path: "./.env" });
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
 const connectDB = require("./configure/db.js");
 const app = express();
@@ -28,9 +27,6 @@ client.createTopics(topics, (err, result) => {
 });
 
 const producer = new kafka.HighLevelProducer(client);
-// const consumer = new kafka.Consumer(client, [{ topic: defaultTopicName }], {
-//   groupId: 'node-express-kafka-group'
-// });
 
 producer.on("ready", function () {
   console.log("Kafka Producer is connected and ready.");
@@ -42,10 +38,6 @@ producer.on("ready", function () {
   });
 
   app.use(cors());
-
-  app.get("/", (req, res) => {
-    res.status(200).json({ message: "API is running" });
-  });
 
   // DataBase Connection
   connectDB();
@@ -60,7 +52,18 @@ producer.on("ready", function () {
     next();
   });
 
+  app.get("/", (req, res) => {
+    res.status(200).json({ message: "API is running" });
+  });
+
   // Routes
+  const userRouter = require("./routes/user");
+  app.use("/api/user", userRouter);
+
+  //Verify User
+  const userVerify = require("./controllers/userController").authenticateToken;
+  app.use(userVerify);
+
   const taskRouter = require("./routes/task");
   app.use("/api/task", taskRouter);
 

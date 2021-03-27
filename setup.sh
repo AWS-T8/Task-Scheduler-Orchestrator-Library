@@ -1,5 +1,7 @@
 echo 'Setting up API...\n'
 sudo docker build -t "api-contract-img" ./backend_apiContract/
+echo 'Setting up Frontend...\n'
+sudo docker build -t "frontend-img" ./frontend/
 echo '\nSetting up Scheduler...\n'
 sudo docker build -t "scheduler-img" ./scheduler/
 echo '\nSetting up taskRunner...\n'
