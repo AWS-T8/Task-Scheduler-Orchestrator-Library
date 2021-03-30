@@ -17,9 +17,9 @@ exports.postTask = async (req, res) => {
 	}
 
 	try {
-		let currTime = new Date();
+		let currTime = new Date(req.body.timeDelay);
 		const finalTime = new Date(
-			currTime.getTime() + parseInt(req.body.timeDelay)
+			currTime.getTime()
 		);
 		let retryCount = 0,
 			retryAfter = 0;

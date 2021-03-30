@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import SmoothImage from "react-smooth-image";
@@ -7,24 +7,49 @@ import axios from "axios";
 import Loader from "react-loader-spinner";
 import env from "react-dotenv";
 import { taskSchema } from "../validations/TaskValidation";
-
 //Notifications
 import notify from "./Helpers/Notification";
 
+const format = (str) => {
+  if (str.length < 2) {
+    return "0" + str;
+  }
+  return str;
+};
+
 const CreateTask = (props) => {
+  const currentDate = new Date();
+  const yyyy = format(currentDate.getFullYear().toString());
+  const mm = format((currentDate.getMonth() + 1).toString());
+  const dd = format(currentDate.getDate().toString());
+  const hh = format(currentDate.getHours().toString());
+  const min = format(currentDate.getMinutes().toString());
+  const sec = format(currentDate.getSeconds().toString());
   const history = useHistory();
+
+  const minValueDate = `${yyyy}-${mm}-${dd}`.toString();
   const [name, setname] = useState("");
   const [url, seturl] = useState("");
-  const [timeDelay, settimeDelay] = useState(0);
+  const [timeDelay, settimeDelay] = useState(1);
   const [showLoader, setShowLoader] = useState(false);
-
+  const [date, setdate] = useState(`${yyyy}-${mm}-${dd}`);
+  const [time, settime] = useState(`${hh}:${min}:${sec}`);
+  const [retryCount, setretryCount] = useState();
+  const [retrySeconds, setretrySeconds] = useState();
   const userLogin = useSelector((state) => state.userLogin);
+
   const createTaskHandler = async (e) => {
     e.preventDefault();
+    console.log(date);
+    console.log(time);
+    var finalTime = `${date}T${time}+05:30`;
+    console.log(finalTime);
+    var finalDate = new Date(finalTime);
+    console.log(finalDate);
     let formData = {
       name: name,
       url: url,
-      timeDelay: timeDelay,
+      timeDelay: finalDate,
     };
     const isValid = await taskSchema.isValid(formData);
     if (isValid === true) {
@@ -120,21 +145,72 @@ const CreateTask = (props) => {
                     }}
                     required
                   ></input>
-                  <label className="mb-2 mt-2 py-1 px-1 w-full font-semibold text-lg">
-                    Time Delay(in ms)
+                  <label className="mb-2 mt-2 py-1 px-1 w-full font-semibold text-500 text-lg">
+                    Query Parameters
                   </label>
-                  <input
-                    type="number"
-                    name="timedelay"
-                    id="timedelay"
-                    className="w-full py-2 rounded-lg px-5  focus:outline-none focus:ring focus:border-blue-300 duration-200 placeholder-gray-400 text-gray-700 border border-gray-300"
-                    placeholder="Enter your time delay"
-                    value={timeDelay}
-                    onChange={(e) => {
-                      settimeDelay(e.target.value);
-                    }}
-                    required
-                  ></input>
+                  <button
+                    className="mr-auto bg-blue-900 px-2 py-2 focus:shadow-outline bg-primary-dark rounded-md text-md font-semibold flex items-center justify-start text-white focus:outline-none hover:text-gray-200"
+                  >
+                    <span className="mr-1">Add Key & Value Pair</span>
+                  </button>
+                  <div className="mb-1 mt-1 w-full">
+                    <label className="mb-2 mt-2 py-1 px-1 w-full block font-semibold text-lg">
+                      Time Delay
+                    </label>
+                    <input
+                      type="date"
+                      name="timedelay"
+                      id="timedelay"
+                      className="w-half mb-2 mr-2 py-2 rounded-lg px-5  focus:outline-none focus:ring focus:border-blue-300 duration-200 placeholder-gray-400 text-gray-700 border border-gray-300"
+                      placeholder="Enter your time delay"
+                      min={minValueDate}
+                      value={date}
+                      onChange={(e) => {
+                        setdate(e.target.value);
+                      }}
+                      required
+                    ></input>
+                    <input
+                      type="time"
+                      name="timedelay"
+                      id="timedelay"
+                      step="2"
+                      className="w-half py-2 rounded-lg px-5  focus:outline-none focus:ring focus:border-blue-300 duration-200 placeholder-gray-400 text-gray-700 border border-gray-300"
+                      placeholder="Enter your time delay"
+                      value={time}
+                      onChange={(e) => {
+                        settime(e.target.value);
+                      }}
+                      required
+                    ></input>
+                  </div>
+                  <div className="w-full">
+                    <label className="mb-2 mt-2 py-1 px-1 w-full block font-semibold text-lg">
+                      Retry
+                    </label>
+                    <input
+                      type="number"
+                      name="retryCount"
+                      id="retryCount"
+                      className="w-half mb-2 mr-2 py-2 rounded-lg px-5  focus:outline-none focus:ring focus:border-blue-300 duration-200 placeholder-gray-400 text-gray-700 border border-gray-300"
+                      placeholder="Enter retry count"
+                      value={retryCount}
+                      onChange={(e) => {
+                        setretryCount(e.target.value);
+                      }}
+                    ></input>
+                    <input
+                      type="number"
+                      name="retrySeconds"
+                      id="retrySeconds"
+                      className="w-half py-2 rounded-lg px-5  focus:outline-none focus:ring focus:border-blue-300 duration-200 placeholder-gray-400 text-gray-700 border border-gray-300"
+                      placeholder="Enter retry after seconds"
+                      value={retrySeconds}
+                      onChange={(e) => {
+                        setretrySeconds(e.target.value);
+                      }}
+                    ></input>
+                  </div>
                 </div>
               </div>
               <div className="flex justify-center mt-10 pt-8 border-t">
