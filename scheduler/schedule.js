@@ -21,12 +21,22 @@ const getTask = async (id) => {
 	return currentTask;
 };
 
-const schedule = async (id) => {
+const schedule = async (id, retry) => {
 	const task = await getTask(id);
 	if (!task) {
 		return;
 	}
-	d = task.execTime;
+	console.log(retry);
+	d = task.scheduledTime;
+	if (retry) {
+		let currTime = new Date();
+		const finalTime = new Date(
+			currTime.getTime() + parseInt(task.retryAfter)
+		);
+		task.status = 'scheduled';
+		task.scheduledTime = finalTime;
+		d = finalTime;
+	}
 	Year = format(d.getFullYear().toString());
 	Month = format((d.getMonth() + 1).toString()); // Has to be incremented by 1
 	date = format(d.getDate().toString());
@@ -103,7 +113,7 @@ const cancel = async (id, method) => {
 			});
 		} else {
 			console.log('updating');
-			schedule(id);
+			schedule(id, false);
 		}
 	});
 };
@@ -148,11 +158,13 @@ db.once('open', async () => {
 
 	consumer.on('message', function (message) {
 		const res = message.value.toString().split(' ');
-		// console.log(`${res[0]} ${res[1]}`)
+		console.log(`${res[0]} ${res[1]}`);
 		if (res[1] === 'POST') {
-			schedule(res[0]);
+			schedule(res[0], false);
 		} else if (res[1] === 'UPDATE') {
 			cancel(res[0], res[1]);
+		} else if (res[1] === 'RETRY') {
+			schedule(res[0], true);
 		} else {
 			cancel(res[0], res[1]);
 		}

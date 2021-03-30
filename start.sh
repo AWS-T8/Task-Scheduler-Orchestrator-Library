@@ -3,7 +3,7 @@ sudo docker-compose up -d
 echo '\nSleeping for 10 seconds...\n'
 sleep 10
 echo '\nStarting taskRunner...\n'
-sudo docker run -d --network=host -v /home/sanskar/AWS-T8/backend_taskRunner/logs:/usr/src/app/taskRunner/logs task-runner-img
+sudo docker run -p 8082:8082 -d --network=host -v /home/sanskar/AWS-T8/backend_taskRunner/logs:/usr/src/app/taskRunner/logs task-runner-img
 echo '\nSleeping for 5 seconds...\n'
 sleep 5
 echo '\nStarting Scheduler...\n'

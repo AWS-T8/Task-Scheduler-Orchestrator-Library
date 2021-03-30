@@ -35,7 +35,6 @@ producer.on('ready', function () {
 	console.log('Kafka Producer is connected and ready');
 
 	app.get('/:id', (req, res) => {
-		console.log("HELLO!");
 		if (!ObjectID.isValid(req.params.id)) {
 			return res.status(404).json({ message: 'Invalid Id' });
 		}
