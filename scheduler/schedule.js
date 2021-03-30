@@ -95,7 +95,6 @@ const schedule = async (id, retry) => {
 };
 
 const cancel = async (id, method) => {
-<<<<<<< HEAD
 	const task = await getTask(id);
 	if (!task) {
 		return;
@@ -117,29 +116,6 @@ const cancel = async (id, method) => {
 			schedule(id, false);
 		}
 	});
-=======
-  const task = await getTask(id);
-  if (!task) {
-    return;
-  }
-  jobID = task.procID;
-  command = `atrm ${jobID}`;
-  exec(command, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`exec error: ${error}`);
-      return;
-    }
-    if (method === "CANCEL") {
-      task.status = "cancelled";
-      task.save().then((res) => {
-        console.log("cancelled");
-      });
-    } else {
-      console.log("updating");
-      schedule(id);
-    }
-  });
->>>>>>> 68ab73381e108f0518ce627c238a61e1eab40a44
 };
 
 // DataBase Connection
@@ -180,7 +156,6 @@ db.once("open", async () => {
     groupId: "node-express-kafka-group",
   });
 
-<<<<<<< HEAD
 	consumer.on('message', function (message) {
 		const res = message.value.toString().split(' ');
 		console.log(`${res[0]} ${res[1]}`);
@@ -194,19 +169,6 @@ db.once("open", async () => {
 			cancel(res[0], res[1]);
 		}
 	});
-=======
-  consumer.on("message", function (message) {
-    const res = message.value.toString().split(" ");
-    // console.log(`${res[0]} ${res[1]}`)
-    if (res[1] === "POST") {
-      schedule(res[0]);
-    } else if (res[1] === "UPDATE") {
-      cancel(res[0], res[1]);
-    } else {
-      cancel(res[0], res[1]);
-    }
-  });
->>>>>>> 68ab73381e108f0518ce627c238a61e1eab40a44
 
   consumer.on("error", function (error) {
     console.log(error);
