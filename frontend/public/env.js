@@ -5,7 +5,7 @@ window.env = {
   "BACKEND_URL": "http://13.68.242.205:3000/api",
   "ChocolateyInstall": "C:\\ProgramData\\chocolatey",
   "ChocolateyLastPathUpdate": "132502587901856392",
-  "CHROME_CRASHPAD_PIPE_NAME": "\\\\.\\pipe\\crashpad_17288_IIEROEEEVUGJKSFQ",
+  "CHROME_CRASHPAD_PIPE_NAME": "\\\\.\\pipe\\crashpad_3268_HDSGFJFOISPEADNN",
   "COLOR": "1",
   "COLORTERM": "truecolor",
   "CommonProgramFiles": "C:\\Program Files\\Common Files",

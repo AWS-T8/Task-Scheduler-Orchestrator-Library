@@ -22,7 +22,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNWY1ZGIyZ
 {
     "name": "Task 1",
     "timeDelay": "0",
-    "url": "https://ck1row60f2.execute-api.us-east-2.amazonaws.com/default/function2"
+    "url": "https://etv7e43we4.execute-api.us-east-2.amazonaws.com/default/test"
 }
 
 ###
