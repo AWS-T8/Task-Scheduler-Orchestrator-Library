@@ -14,7 +14,7 @@ const Dropdown = ({ statusList, onStatusChangedHandler, dispStatus }) => {
         />
       </svg>
       <select
-        className="border border-gray-600 rounded-md text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none"
+        className="border border-gray-600 rounded-md h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none"
         onChange={(e) => onStatusChangedHandler(e.target.value)}
         value={dispStatus}
       >

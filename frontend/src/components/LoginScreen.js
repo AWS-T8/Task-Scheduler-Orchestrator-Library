@@ -29,7 +29,6 @@ const LoginScreen = (history) => {
     e.preventDefault();
     if (username && password) {
       dispatch(login(username, password));
-      console.log(userLogin.user);
     } else {
       notify("warning", "Please Fill All Fields");
     }

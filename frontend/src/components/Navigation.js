@@ -25,7 +25,7 @@ const Navigation = () => {
       {/* Navbar */}
       {/* <div className="bg-white border-blue-400 border-t-8 py-1 z-18"></div> */}
       <nav
-        className="py-4 relative z-25 bg-white flex flex-row justify-between shadow-xl h-16"
+        className="py-4 relative z-50 bg-white flex flex-row justify-between shadow-xl h-16"
         style={navStyle}
       >
         <script
