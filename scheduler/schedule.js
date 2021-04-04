@@ -1,10 +1,12 @@
 const kafka = require("kafka-node");
 require("dotenv").config({ path: "./.env" });
 const mongoose = require("mongoose");
-const taskDB = require("./models/taskDB");
 const ObjectID = require("mongodb").ObjectID;
 const { exec } = require("child_process");
 const recover = require("./recover.js");
+
+const taskDB = require("./models/taskDB");
+const orchestratorDB = require("./models/orchestratorDB");
 
 const format = (str) => {
   if (str.length < 2) {
@@ -21,45 +23,37 @@ const getTask = async (id) => {
   return currentTask;
 };
 
-const schedule = async (id, retry) => {
-	const task = await getTask(id);
-	if (!task) {
-		return;
-	}
-	console.log(retry);
-	d = task.scheduledTime;
-	if (retry) {
-		let currTime = new Date();
-		const finalTime = new Date(
-			currTime.getTime() + parseInt(task.retryAfter)
-		);
-		task.status = 'scheduled';
-		task.scheduledTime = finalTime;
-		d = finalTime;
-	}
-	Year = format(d.getFullYear().toString());
-	Month = format((d.getMonth() + 1).toString()); // Has to be incremented by 1
-	date = format(d.getDate().toString());
-	hours = format(d.getHours().toString());
-	minutes = format(d.getMinutes().toString());
-	seconds = format(d.getSeconds().toString());
+const getOrchestrator = async (id) => {
+  if (!ObjectID.isValid(id)) {
+    return null;
+  }
+  const currentOrchestrator = await orchestratorDB.findById(id);
+  return currentOrchestrator;
+};
+
+const schedule = async (id, type) => {
+  let current;
+  if (type === "ORCH") {
+    current = await getOrchestrator(id);
+  } else {
+    current = await getTask(id);
+  }
+
+  if (!current) {
+    return;
+  }
+  const d = current.scheduledTime;
+
+  Year = format(d.getFullYear().toString());
+  Month = format((d.getMonth() + 1).toString()); // Has to be incremented by 1
+  date = format(d.getDate().toString());
+  hours = format(d.getHours().toString());
+  minutes = format(d.getMinutes().toString());
+  seconds = format(d.getSeconds().toString());
 
   exactTime = `${Year}${Month}${date}${hours}${minutes}.${seconds}`;
-  console.log(`execute at: ${exactTime}`);
+  console.log(`execute ${type} ${id} at: ${exactTime}`);
 
-  /**
-	 * - Logic for seconds accuracy
-	 * - We can find the current time using Date library
-	   - if diff<0:
-			sleep=0;
-	   - if diff>=60
-			sleep= seconds
-	   - if diff<60
-			if(curr_min!=exe_min)
-				sleep= seconds
-			else
-				sleep= exec_sec-curr_sec
-	 */
   let curr_date = new Date();
   let diff = d - curr_date;
   let sleepTime = 0;
@@ -79,8 +73,7 @@ const schedule = async (id, retry) => {
       // sleepTime= 0;
     }
   }
-  // command = `echo "node taskRunner.js ${id}" | at -t ${exactTime}`;
-  const curlCommand = `curl --location --request GET '${process.env.PRODUCER_URL}/${id}'`;
+  const curlCommand = `curl --location --request GET '${process.env.PRODUCER_URL}/?id=${id}&type=${type}'`;
   command = `echo "sleep ${sleepTime} && ${curlCommand}" | at -t ${exactTime}`;
   //schedule logic
   exec(command, (error, stdout, stderr) => {
@@ -89,33 +82,40 @@ const schedule = async (id, retry) => {
       return;
     }
     // console.log(stderr);
-    task.procID = stderr.match(/\d+/)[0];
-    task.save();
+    current.procID = parseInt(stderr.match(/\d+/)[0]);
+    current.save();
   });
 };
 
-const cancel = async (id, method) => {
-	const task = await getTask(id);
-	if (!task) {
-		return;
-	}
-	jobID = task.procID;
-	command = `atrm ${jobID}`;
-	exec(command, (error, stdout, stderr) => {
-		if (error) {
-			console.error(`exec error: ${error}`);
-			return;
-		}
-		if (method === 'CANCEL') {
-			task.status = 'cancelled';
-			task.save().then((res) => {
-				console.log('cancelled');
-			});
-		} else {
-			console.log('updating');
-			schedule(id, false);
-		}
-	});
+const cancel = async (id, method, type) => {
+  let current;
+  if (type === "ORCH") {
+    current = await getOrchestrator(id);
+  } else {
+    current = await getTask(id);
+  }
+
+  if (!current) {
+    return;
+  }
+
+  jobID = current.procID;
+  command = `atrm ${jobID}`;
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`exec error: ${error}`);
+      return;
+    }
+    if (method === "CANCEL") {
+      current.status = "cancelled";
+      current.save().then((res) => {
+        console.log("cancelled");
+      });
+    } else {
+      console.log("updating");
+      schedule(id, type);
+    }
+  });
 };
 
 // DataBase Connection
@@ -133,7 +133,6 @@ db.once("open", async () => {
   recover(allTasks);
 
   const defaultTopicName = "aws-kafka";
-  console.log(process.env.KAFKA_URL);
   const kafkaHost = process.env.KAFKA_URL;
 
   const client = new kafka.KafkaClient({
@@ -156,19 +155,33 @@ db.once("open", async () => {
     groupId: "node-express-kafka-group",
   });
 
-	consumer.on('message', function (message) {
-		const res = message.value.toString().split(' ');
-		console.log(`${res[0]} ${res[1]}`);
-		if (res[1] === 'POST') {
-			schedule(res[0], false);
-		} else if (res[1] === 'UPDATE') {
-			cancel(res[0], res[1]);
-		} else if (res[1] === 'RETRY') {
-			schedule(res[0], true);
-		} else {
-			cancel(res[0], res[1]);
-		}
-	});
+  consumer.on("message", function (message) {
+    const res = message.value.toString().split(" ");
+    let type;
+    if (res.length === 2) {
+      type = "TASK";
+      console.log(`Received: ${res[0]} Method: ${res[1]} TYPE: ${type}`);
+      if (res[1] === "POST") {
+        schedule(res[0], type);
+      } else if (res[1] === "UPDATE") {
+        cancel(res[0], res[1], type);
+      } else if (res[1] === "RETRY") {
+        schedule(res[0], type);
+      } else if (res[1] === "CANCEL") {
+        cancel(res[0], res[1], type);
+      }
+    } else {
+      type = "ORCH";
+      console.log(`Received: ${res[0]} Method: ${res[1]} Type: ${type}`);
+      if (res[1] === "POST") {
+        schedule(res[0], type);
+      } else if (res[1] === "UPDATE") {
+        cancel(res[0], res[1], type);
+      } else if (res[1] === "CANCEL") {
+        cancel(res[0], res[1], type);
+      }
+    }
+  });
 
   consumer.on("error", function (error) {
     console.log(error);

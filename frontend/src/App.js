@@ -6,6 +6,8 @@ import Footer from "./components/Footer";
 import CreateTask from "./components/CreateTask";
 import LoginScreen from "./components/LoginScreen";
 import ProtectedRoute from "./components/Helpers/ProtectedRoutes";
+import CreateOrchestrator from "./components/CreateOrchestrator";
+import OrchestratorList from "./components/OrchestratorList";
 
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
@@ -23,6 +25,11 @@ function App() {
           <Route path="/signIn" component={LoginScreen} />
           <ProtectedRoute path="/tasks" component={TaskList} />
           <ProtectedRoute path="/createTask" component={CreateTask} />
+          <ProtectedRoute
+            path="/createOrchestration"
+            component={CreateOrchestrator}
+          />
+          <ProtectedRoute path="/orchestrations" component={OrchestratorList} />
           <Route path="/" component={Home} />
         </Switch>
         {/* Footer */}

@@ -1,7 +1,8 @@
 import { React } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/userActions";
+import NavMenu from "./Helpers/NavMenu";
 const navStyle = {
   position: "fixed",
   top: "0",
@@ -12,8 +13,9 @@ const Navigation = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const dispatch = useDispatch();
 
+  const location = useLocation();
+
   const onLogoutHandler = (e) => {
-    e.preventDefault();
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     localStorage.removeItem("password");
@@ -48,22 +50,10 @@ const Navigation = () => {
             </h1>
           </Link>
         </div>
-        <div className="mr-4 w-2/3 ml-4 sm:ml-8 md:ml-12 md:ml-12 md:mr-10 sm:mr-10 flex justify-end">
+        <div className="mr-4 w-2/3 mb-4 ml-4 sm:ml-8 md:ml-12 md:ml-12 md:mr-10 sm:mr-10 flex justify-end">
           {userLogin.isLoggedIn && (
             <div className="flex text-sm sm:text-lg md:text-xl">
-              <Link to="/tasks">
-                <button className="mr-2 ml-2 bg-blue-900 text-white font-bold py-1 px-4 rounded">
-                  Tasks
-                </button>
-              </Link>
-              <Link to="/signIn">
-                <button
-                  className="ml-1 bg-blue-900 text-white font-bold py-1 px-4 rounded"
-                  onClick={onLogoutHandler}
-                >
-                  Logout
-                </button>
-              </Link>
+              <NavMenu onLogoutHandler={onLogoutHandler} path= {location.pathname}/>
             </div>
           )}
           {!userLogin.isLoggedIn && (

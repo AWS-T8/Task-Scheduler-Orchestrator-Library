@@ -1,7 +1,7 @@
 var kafka = require("kafka-node");
 require("dotenv").config({ path: "./.env" });
 
-const defaultTopicName = "sch-task";
+const defaultTopicName = "scheduler-task";
 const kafkaHost = process.env.KAFKA_URL;
 const { exec } = require("child_process");
 
@@ -27,7 +27,15 @@ const consumer = new kafka.Consumer(client, [{ topic: defaultTopicName }], {
 
 consumer.on("message", function (message) {
   console.log(message);
-  command = `node ./taskRunner.js ${message.value}`;
+  const newMessage = message.value.toString().split(" ");
+  const id = newMessage[0],
+    type = newMessage[1];
+  let command;
+  if (type === "TASK") {
+    command = `node ./taskRunner.js ${id}`;
+  } else {
+    command = `node ./orchestratorRunner.js ${id}`;
+  }
   exec(command, (error, stdout, stderr) => {
     if (error) {
       console.error(`exec error: ${error}`);

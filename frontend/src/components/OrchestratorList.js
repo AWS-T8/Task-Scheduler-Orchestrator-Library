@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Task from "./Helpers/Task";
+import Orchestration from "./Helpers/Orchestration";
 import axios from "axios";
 import env from "react-dotenv";
 import notify from "./Helpers/Notification";
@@ -10,14 +10,14 @@ import Modal from "./Helpers/Modal";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import AddIcon from "@material-ui/icons/Add";
 
-const TaskList = () => {
-  const [displayTasks, setdisplayTasks] = useState([]);
-  const [totalTasks, setTotalTasks] = useState(0);
-  const [scheduledTasks, setScheduledTasks] = useState(0);
-  const [cancelledTask, setCancelledTasks] = useState(0);
-  const [completedTasks, setCompletedTasks] = useState(0);
-  const [failedTasks, setFailedTasks] = useState(0);
-  const [runningTasks, setRunningTasks] = useState(0);
+const OrchestrationList = () => {
+  const [displayOrchestrations, setDisplayOrchestrations] = useState([]);
+  const [totalOrchestrations, setTotalOrchestrations] = useState(0);
+  const [scheduledOrchestrations, setScheduledOrchestrations] = useState(0);
+  const [cancelledOrchestrations, setCancelledOrchestrations] = useState(0);
+  const [completedOrchestrations, setCompletedOrchestrations] = useState(0);
+  const [failedOrchestrations, setFailedOrchestrations] = useState(0);
+  const [runningOrchestrations, setRunningOrchestrations] = useState(0);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -35,7 +35,7 @@ const TaskList = () => {
     // console.log(id);
     setLoading(true);
 
-    fetch(`${env.BACKEND_URL}/task/cancel/${id}`, {
+    fetch(`${env.BACKEND_URL}/orchestrator/cancel/${id}`, {
       method: "PATCH", // or 'PUT'
       headers: {
         "Content-Type": "application/json",
@@ -44,9 +44,9 @@ const TaskList = () => {
     })
       .then((res) => {
         if (res.status === 200) {
-          notify("success", "Task Cancelled!");
+          notify("success", "Orchestration Cancelled!");
         } else if (res.status === 403) {
-          notify("error", "Task Cannot Be Cancelled!");
+          notify("error", "Orchestration Cannot Be Cancelled!");
         } else if (res.status === 500) {
           notify("error", "Internal Server Error!");
         } else {
@@ -71,9 +71,9 @@ const TaskList = () => {
     setModifyID(-1);
     setShowModal(false);
     setLoading(true);
-    const url = `${env.BACKEND_URL}/task/${changeID}`;
+    const url = `${env.BACKEND_URL}/orchestrator/${changeID}`;
     const data = {
-      timeDelay: newTimeDelay,
+      initialDelay: newTimeDelay,
     };
     const config = {
       method: "PATCH", // or 'PUT'
@@ -86,11 +86,11 @@ const TaskList = () => {
     fetch(url, config)
       .then((res) => {
         if (res.status === 200) {
-          notify("success", "Task Modified!");
+          notify("success", "Orchestration Modified!");
         } else if (res.status === 406) {
           notify("warning", "Please Enter Valid Data!");
         } else if (res.status === 403) {
-          notify("error", "Task Cannot Be Modified!");
+          notify("error", "Orchestration Cannot Be Modified!");
         } else {
           notify("error", "Something Went Wrong!");
         }
@@ -102,9 +102,9 @@ const TaskList = () => {
       });
   };
 
-  const getAllTasks = () => {
+  const getAllOrchestrations = () => {
     setLoading(true);
-    let url = `${env.BACKEND_URL}/tasks`;
+    let url = `${env.BACKEND_URL}/orchestrators`;
     const selectedStatus = dispStatus.toLowerCase();
     // if (dispStatus !== 'All') url += `/${dispStatus.toLowerCase()}`;
     axios
@@ -115,49 +115,67 @@ const TaskList = () => {
       })
       .then((res) => res.data)
       .then(async (data) => {
-        let scheduledTasksCount = 0,
-          cancelledTasksCount = 0,
-          completedTasksCount = 0,
-          failedTasksCount = 0,
-          totalTasksCount = 0,
-          runningTasksCount = 0;
-        let tasks = await data.reduce((accumulator, task) => {
-          totalTasksCount++;
-          if (task.status === "scheduled") scheduledTasksCount++;
-          else if (task.status === "running") runningTasksCount++;
-          else if (task.status === "failed") failedTasksCount++;
-          else if (task.status === "cancelled") cancelledTasksCount++;
-          else if (task.status === "completed") completedTasksCount++;
-          if (task.status === selectedStatus || selectedStatus === "all") {
+        let scheduledOrchestrationsCount = 0,
+          cancelledOrchestrationCount = 0,
+          completedOrchestrationCount = 0,
+          failedOrchestrationCount = 0,
+          totalOrchestrationCount = 0,
+          runningOrchestrationCount = 0;
+        let orchestrations = await data.reduce((accumulator, orchestration) => {
+          totalOrchestrationCount++;
+          let statusSplit = orchestration.status.split(" ");
+          let currStatus = statusSplit[0];
+          let secondWord = "";
+          secondWord = statusSplit[1];
+          if (currStatus === "scheduled") scheduledOrchestrationsCount++;
+          else if (currStatus === "completed" && secondWord !== "fallback")
+            completedOrchestrationCount++;
+          else if (currStatus === "running") runningOrchestrationCount++;
+          else if (currStatus === "cancelled") cancelledOrchestrationCount++;
+          else failedOrchestrationCount++;
+          let reachedFallback = false;
+          if (secondWord === "fallback") reachedFallback = true;
+          if (currStatus === selectedStatus || selectedStatus === "all") {
             accumulator.push(
-              <Task
-                key={task.id}
-                id={task.id}
-                name={task.name}
-                URL={task.url}
-                ScheduleTime={task.scheduledTime}
-                Status={task.status}
+              <Orchestration
+                key={orchestration.id}
+                id={orchestration.id}
+                name={orchestration.name}
+                taskUrls={orchestration.taskUrls}
+                scheduledTime={orchestration.scheduledTime}
+                status={orchestration.status}
+                startTime={orchestration.startTime}
+                endTime={orchestration.endTime}
                 onCancelHandler={onCancelHandler}
                 toggleModal={toggleModal}
+                conditionCheckTaskUrl={orchestration.conditionCheckTaskUrl}
+                fallbackTaskUrl={orchestration.fallbackTaskUrl}
+                conditionCheckRetries={orchestration.conditionCheckRetries}
+                numberOfTasks={orchestration.numberOfTasks}
+                timeDelayBetweenRetries={orchestration.timeDelayBetweenRetries}
+                timeDelayForConditionCheck={
+                  orchestration.timeDelayForConditionCheck
+                }
+                reachedFallback={reachedFallback}
               />
             );
           }
           return accumulator;
         }, []);
-        if (tasks.length === 0) {
-          tasks = (
+        if (orchestrations.length === 0) {
+          orchestrations = (
             <div className="self-center">
-              <p>No Tasks Found!</p>
+              <p>No orchestrations Found!</p>
             </div>
           );
         }
-        setTotalTasks(totalTasksCount);
-        setScheduledTasks(scheduledTasksCount);
-        setRunningTasks(runningTasksCount);
-        setCompletedTasks(completedTasksCount);
-        setFailedTasks(failedTasksCount);
-        setCancelledTasks(cancelledTasksCount);
-        setdisplayTasks(tasks);
+        setTotalOrchestrations(totalOrchestrationCount);
+        setScheduledOrchestrations(scheduledOrchestrationsCount);
+        setRunningOrchestrations(runningOrchestrationCount);
+        setCompletedOrchestrations(completedOrchestrationCount);
+        setFailedOrchestrations(failedOrchestrationCount);
+        setCancelledOrchestrations(cancelledOrchestrationCount);
+        setDisplayOrchestrations(orchestrations);
         setLoading(false);
       })
       .catch((err) => {
@@ -174,7 +192,7 @@ const TaskList = () => {
   };
 
   useEffect(() => {
-    getAllTasks();
+    getAllOrchestrations();
   }, [refresh]);
 
   return (
@@ -200,15 +218,16 @@ const TaskList = () => {
             <div className="mt-28 flex-grow flex flex-col-reverse lg:flex-row mx-8 sm:mx-16 justify-between mb-4">
               {showModal ? (
                 <Modal
+                  type="Orchestration"
                   newTimeDelay={newTimeDelay}
                   setNewTimeDelay={setNewTimeDelay}
                   setShowModal={setShowModal}
                   onModifyHandler={onModifyHandler}
                 />
               ) : null}
-              {/* Task List */}
+              {/* Orchestration List */}
               <div className="lg:w-3/5 flex flex-col justify-around">
-                {displayTasks}
+                {displayOrchestrations}
               </div>
               {/* Dashboard */}
               <div className=" md:inline flex flex-col justify-start mb-8 lg:mb-0 w-full lg:w-1/3 lg:h-1/4 self-start">
@@ -238,14 +257,14 @@ const TaskList = () => {
                     <RefreshIcon fontSize="small" />
                     <p className="ml-1">Refresh</p>
                   </button>
-                  <Link to="/createTask">
+                  <Link to="/createOrchestration">
                     <button
                       onClick={toggleRefresh}
                       type="button"
                       className="focus:outline-none  text-sm py-2.5 px-5 rounded-md border border-gray-600 hover:bg-gray-50 flex items-center"
                     >
                       <AddIcon fontSize="small" />
-                      <p className="ml-1">Create Task</p>
+                      <p className="ml-1">Create Orchestration</p>
                     </button>
                   </Link>
                 </div>
@@ -253,15 +272,15 @@ const TaskList = () => {
                 <div className="bg-white shadow shadow-xl border  px-4 py-4 divide-y-4 divide-black-700">
                   <div>
                     <p className="font-semibold text-2xl">
-                      Total Tasks: {totalTasks}
+                      Total Orchestrations: {totalOrchestrations}
                     </p>
                   </div>
                   <div className="font-normal text-lg my-2 ">
-                    <p className="my-2">Scheduled: {scheduledTasks}</p>
-                    <p className="my-2">Completed: {completedTasks}</p>
-                    <p className="my-2">Cancelled: {cancelledTask}</p>
-                    <p className="my-2">Failed: {failedTasks}</p>
-                    <p className="">Running: {runningTasks}</p>
+                    <p className="my-2">Scheduled: {scheduledOrchestrations}</p>
+                    <p className="my-2">Completed: {completedOrchestrations}</p>
+                    <p className="my-2">Cancelled: {cancelledOrchestrations}</p>
+                    <p className="my-2">Failed: {failedOrchestrations}</p>
+                    <p className="">Running: {runningOrchestrations}</p>
                   </div>
                 </div>
               </div>
@@ -273,4 +292,4 @@ const TaskList = () => {
   );
 };
 
-export default TaskList;
+export default OrchestrationList;

@@ -17,12 +17,21 @@ const Content = (props) => {
           An open source task orchestrator & scheduler library to schedule AWS
           lambda functions.
         </p>
-        <div>
-          <Link to="/createTask">
-            <button className="mt-10 w-1/2 sm:w-1/3 md:w-1/2 lg:w-1/6 bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-              Create Task
-            </button>
-          </Link>
+        <div className="flex space-x-1">
+          <div className="inline-flex">
+            <Link to="/createTask">
+              <button className="mt-10 mb-5 w-full sm:w-full md:w-full lg:w-full bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                Create Task
+              </button>
+            </Link>
+          </div>
+          <div className="inline-flex">
+            <Link to="/createOrchestration">
+              <button className="mt-10 ml-5 w-full sm:w-full md:w-full lg:w-full bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                Create Orchestration
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
       <div className="mt-10 w-1/3 min-h-full hidden sm:inline">

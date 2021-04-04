@@ -53,7 +53,7 @@ producer.on("ready", function () {
   });
 
   app.get("/", (req, res) => {
-    res.status(200).json({ message: "API is running" });
+    res.status(200).json({ message: "API Is Running" });
   });
 
   // Routes
@@ -69,6 +69,16 @@ producer.on("ready", function () {
 
   const tasksRouter = require("./routes/tasks");
   app.use("/api/tasks", tasksRouter);
+
+  const orchestratorRouter = require("./routes/orchestrator");
+  app.use("/api/orchestrator", orchestratorRouter);
+
+  const orchestratorsRouter = require("./routes/orchestrators");
+  app.use("/api/orchestrators", orchestratorsRouter);
+
+  app.use((req, res) => {
+    return res.status(404).json({ message: "404 Not Found" });
+  });
 });
 
 producer.on("error", function (error) {

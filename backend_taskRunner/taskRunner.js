@@ -22,7 +22,7 @@ const writeLog = async (taskLog) => {
 };
 
 const getTask = async (id) => {
-	const url = `${process.env.SERVER_URL}/start/${id}`;
+	const url = `${process.env.SERVER_URL}/task/start/${id}`;
 	const task = await fetch(url)
 		.then((result) => {
 			if (result.status == 200) {
@@ -38,7 +38,7 @@ const getTask = async (id) => {
 };
 
 const saveTask = (id, newStatus) => {
-	const url = `${process.env.SERVER_URL}/save/?id=${id}&newStatus=${newStatus}`;
+	const url = `${process.env.SERVER_URL}/task/save/?id=${id}&newStatus=${newStatus}`;
 	fetch(url)
 		.then((result) => {
 			if (result.status == 200) {
