@@ -1,6 +1,8 @@
+//Imports
 var kafka = require('kafka-node');
 require('dotenv').config({ path: './.env' });
 
+//Setting kafka variables
 const defaultTopicName = 'aws-kafka';
 const kafkaHost = process.env.KAFKA_URL;
 
@@ -25,6 +27,7 @@ const recover = (allTasks) => {
 
 	producer.on('ready', function () {
 		console.log('Kafka Producer is connected and ready');
+		//Send all tasks to scheduler again
 		allTasks.forEach((task) => {
 			const id = task._id;
 			const payloads = [

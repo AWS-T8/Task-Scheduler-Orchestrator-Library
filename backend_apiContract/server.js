@@ -1,12 +1,17 @@
+//Imports
 require("dotenv").config({ path: "./.env" });
 const express = require("express");
 const cors = require("cors");
-const connectDB = require("./configure/db.js");
+const kafka = require("kafka-node");
+
 const app = express();
+
+const connectDB = require("./configure/db.js");
+const rateLimit = require("express-rate-limit");
 
 const PORT = 3000;
 
-const kafka = require("kafka-node");
+//Kafka configurations
 const defaultTopicName = "aws-kafka";
 const kafkaHost = process.env.KAFKA_URL;
 
@@ -30,6 +35,8 @@ const producer = new kafka.HighLevelProducer(client);
 
 producer.on("ready", function () {
   console.log("Kafka Producer is connected and ready.");
+
+  //Passing producer object in request
   app.use(function (req, res, next) {
     req.producer = producer;
     req.client = client;
@@ -37,12 +44,23 @@ producer.on("ready", function () {
     next();
   });
 
+  //Passing CORS headers in requests
   app.use(cors());
 
   // DataBase Connection
   connectDB();
 
   app.use(express.json());
+
+  //Setting rate limiter
+  if (process.env.TEST === "server") {
+    const limiter = rateLimit({
+      windowMs: 1 * 1000, // 1 sec window
+      max: 2, // start blocking after 2 request
+      message: "Too many requests from this IP",
+    });
+    app.use(limiter);
+  }
 
   // Cheking for bad request
   app.use((err, req, res, next) => {
@@ -62,7 +80,18 @@ producer.on("ready", function () {
 
   //Verify User
   const userVerify = require("./controllers/userController").authenticateToken;
-  app.use(userVerify);
+  if (process.env.TEST === "server") {
+    app.use(userVerify);
+  } else {
+    // const user = {
+    //   username: "test",
+    //   id: "test",
+    // };
+    // app.use((req, res, next) => {
+    //   req.user = user;
+    //   next();
+    // });
+  }
 
   const taskRouter = require("./routes/task");
   app.use("/api/task", taskRouter);
@@ -76,6 +105,7 @@ producer.on("ready", function () {
   const orchestratorsRouter = require("./routes/orchestrators");
   app.use("/api/orchestrators", orchestratorsRouter);
 
+  //Error route
   app.use((req, res) => {
     return res.status(404).json({ message: "404 Not Found" });
   });
@@ -85,9 +115,7 @@ producer.on("error", function (error) {
   console.log("Error", error);
 });
 
-// API server
-
-console.log(process.env.TEST);
+//For test environment
 if (process.env.TEST === "server") {
   app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 } else {

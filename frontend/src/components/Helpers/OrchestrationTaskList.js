@@ -11,7 +11,7 @@ const OrchestrationTaskList = ({
     <div className="flex flex-col w-full mb-2">
       <div className="">
         <label className="mt-2 px-1 w-full block font-normal text-sm">
-          URL
+          Task #{index+1}
         </label>
       </div>
       <div className="flex">

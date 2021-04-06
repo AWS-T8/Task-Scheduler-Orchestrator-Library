@@ -151,6 +151,7 @@ const OrchestrationList = () => {
                 conditionCheckTaskUrl={orchestration.conditionCheckTaskUrl}
                 fallbackTaskUrl={orchestration.fallbackTaskUrl}
                 conditionCheckRetries={orchestration.conditionCheckRetries}
+                initialRetryCount= {orchestration.initialRetryCount}
                 numberOfTasks={orchestration.numberOfTasks}
                 timeDelayBetweenRetries={orchestration.timeDelayBetweenRetries}
                 timeDelayForConditionCheck={

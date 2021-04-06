@@ -21,6 +21,7 @@ const Orchestration = ({
   timeDelayBetweenRetries,
   timeDelayForConditionCheck,
   reachedFallback,
+  initialRetryCount,
 }) => {
   const [showHidden, setShowHidden] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -104,6 +105,9 @@ const Orchestration = ({
             <p className="text-md">More Details:</p>
           </div>
           <div className="flex flex-col pt-2">
+            <div className="font-light text-sm">
+              <p>Retries Done: {initialRetryCount-conditionCheckRetries}</p>
+            </div>
             <div className="font-light text-sm">
               <p>Retries Left: {conditionCheckRetries}</p>
             </div>

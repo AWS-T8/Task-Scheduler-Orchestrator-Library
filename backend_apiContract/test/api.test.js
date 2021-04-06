@@ -7,17 +7,35 @@ const taskDB = require("../models/taskDB");
 
 const taskURL = "/api/task";
 const tasksURL = "/api/tasks";
-const id = "60508dd6ccf1384348ccd092";
+const registerURL = "/api/user/register";
+const loginURL = "/api/user/login";
+const id = "606c5da9dd045c2638a1f645";
+let token = "";
 const connectDB = require("../configure/db.js");
+
 beforeAll(async () => {
   await connectDB();
+  await request(app).post(`${registerURL}`).send({
+    username: "admin",
+    password: "admin",
+  });
+  await request(app)
+    .post(`${loginURL}`)
+    .send({
+      username: "admin",
+      password: "admin",
+    })
+    .then((result) => JSON.stringify(result))
+    .then(async (res) => {
+      let data = await JSON.parse(res);
+      let text = await JSON.parse(data.text);
+      token = text["accessToken"];
+      console.log(token);
+    });
 });
 
 test("GET /", async () => {
-  await request(app)
-    .get(`${tasksURL}`)
-    .expect(200)
-    .expect("Content-Type", /json/);
+  await request(app).get("/").expect(200).expect("Content-Type", /json/);
 });
 
 describe("GET Requests to /api/tasks", () => {
@@ -101,8 +119,10 @@ describe("POST Requests", () => {
   test("POST Task (201)", async () => {
     await request(app)
       .post(`${taskURL}`)
+      .set({headers: { Authorization: `Bearer ${token}` }})
       .send({
-        timeDelay: "5000",
+        name: "test",
+        timeDelay: 1617727220000,
         url: "https://xmeme-saksham9575.herokuapp.com/memes",
       })
       .expect("Content-Type", /json/)
@@ -116,6 +136,7 @@ describe("POST Requests", () => {
     await request(app)
       .post("/api/task/")
       .send({
+        name: "test",
         someOtherParam: "5000",
         url: "https://xmeme-saksham9575.herokuapp.com/memes",
       })

@@ -279,14 +279,14 @@ const CreateTask = (props) => {
                     <div className="flex">
                       <div>
                         <label className="mb-1 py-1 px-1 w-full block font-normal text-sm">
-                          Number Of Retries
+                          {`Number Of Retries (<=100)`}
                         </label>
                         <input
                           type="number"
                           name="retryCount"
                           id="retryCount"
                           className="w-half mb-2 mr-2 py-2 rounded-lg px-5  focus:outline-none focus:ring focus:border-blue-300 duration-200 placeholder-gray-400 text-gray-700 border border-gray-300"
-                          placeholder="Enter retry count"
+                          placeholder="Enter retry count (<=100)"
                           value={retryCount}
                           onChange={(e) => {
                             setretryCount(e.target.value);

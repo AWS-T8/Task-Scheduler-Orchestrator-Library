@@ -141,7 +141,7 @@ const CreateOrchestrator = (props) => {
                   <div className="mb-4 py-2">
                     <div className="flex flex-col">
                       <label className="mt-2 py-1 px-1 w-full font-semibold text-lg">
-                        Orchestration Name
+                        <span>Orchestration Name</span>
                       </label>
                       <input
                         type="textarea"
@@ -157,8 +157,11 @@ const CreateOrchestrator = (props) => {
                       ></input>
                     </div>
                     <div className="flex flex-col">
-                      <label className="mt-2 py-1 px-1 w-full font-semibold text-500 text-lg">
-                        Initial Delay
+                      <label className="flex flex-col mt-2 py-1 px-1 w-full font-semibold text-500 text-lg">
+                        <span>Initial Delay</span>
+                        <span className="text-xs font-light">
+                          Time in ms after which first task will run
+                        </span>
                       </label>
                       <input
                         type="number"
@@ -174,8 +177,11 @@ const CreateOrchestrator = (props) => {
                       ></input>
                     </div>
                     <div className="flex flex-col">
-                      <label className="mt-2 py-1 px-1 w-full font-semibold text-500 text-lg">
-                        Condition Check Task Url
+                      <label className="flex flex-col mt-2 py-1 px-1 w-full font-semibold text-500 text-lg">
+                        <span>Condition Check Task Url</span>
+                        <span className="text-xs font-light">
+                          Condition check will run after success of each task
+                        </span>
                       </label>
                       <input
                         type="url"
@@ -191,8 +197,11 @@ const CreateOrchestrator = (props) => {
                       ></input>
                     </div>
                     <div className="flex flex-col">
-                      <label className="mt-2 py-1 px-1 w-full font-semibold text-500 text-lg">
-                        Condition Check Retries
+                      <label className="flex flex-col mt-2 py-1 px-1 w-full font-semibold text-500 text-lg">
+                        <span>Condition Check Retries</span>
+                        <span className="text-xs font-light">
+                          {`Number of retries if condition check fails (<=100)`}
+                        </span>
                       </label>
                       <input
                         type="number"
@@ -208,8 +217,12 @@ const CreateOrchestrator = (props) => {
                       ></input>
                     </div>
                     <div className="flex flex-col">
-                      <label className="mt-2 py-1 px-1 w-full font-semibold text-500 text-lg">
-                        Fallback Task Url
+                      <label className="flex flex-col mt-2 py-1 px-1 w-full font-semibold text-500 text-lg">
+                        <span>Fallback Task Url</span>
+                        <span className="text-xs font-light">
+                          Fallback will run if all retries of condition check
+                          fail
+                        </span>
                       </label>
                       <input
                         type="url"
@@ -225,8 +238,12 @@ const CreateOrchestrator = (props) => {
                       ></input>
                     </div>
                     <div className="flex flex-col">
-                      <label className="mt-2 py-1 px-1 w-full font-semibold text-500 text-lg">
-                        Time Delay For Condition Check
+                      <label className="flex flex-col mt-2 py-1 px-1 w-full font-semibold text-500 text-lg">
+                        <span>Time Delay For Condition Check</span>
+                        <span className="text-xs font-light">
+                          Time in ms after which condition check will be run upon
+                          success of each task
+                        </span>
                       </label>
                       <input
                         type="number"
@@ -242,8 +259,11 @@ const CreateOrchestrator = (props) => {
                       ></input>
                     </div>
                     <div className="flex flex-col">
-                      <label className="mt-2 py-1 px-1 w-full font-semibold text-500 text-lg">
-                        Time Delay Between Retries
+                      <label className="flex flex-col mt-2 py-1 px-1 w-full font-semibold text-500 text-lg">
+                        <span>Time Delay Between Retries</span>
+                        <span className="text-xs font-light">
+                          Time between each retry of condition check
+                        </span>
                       </label>
                       <input
                         type="number"
@@ -269,7 +289,7 @@ const CreateOrchestrator = (props) => {
                     className="text-xs py-1 px-1 mt-2 mr-auto flex items-center justify-start focus:outline-none rounded-md border border-gray-400 hover:bg-gray-50 flex items-center"
                   >
                     <AddIcon fontSize="small" />
-                    <span className="mx-0.5 self-center">Add Tasks</span>
+                    <span className="mx-0.5 self-center">Add Task</span>
                   </button>
                   <div className="flex flex-col mt-1 w-full">
                     {displayTaskOptions}

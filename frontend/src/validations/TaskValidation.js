@@ -7,7 +7,8 @@ export const taskSchema = yup.object().shape({
     .number()
     .integer("Has to be a Integer!")
     .positive("Postive Values Only!")
-    .moreThan(-1),
+    .moreThan(-1)
+    .max(100),
   retryAfter: yup
     .number()
     .integer("Has to be a Integer!")

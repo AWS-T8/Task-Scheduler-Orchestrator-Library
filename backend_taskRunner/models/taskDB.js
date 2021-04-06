@@ -37,6 +37,10 @@ const taskSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  initialRetryCount: {
+    type: Number,
+    required: true,
+  },
   retryCount: {
     type: Number,
     required: false,

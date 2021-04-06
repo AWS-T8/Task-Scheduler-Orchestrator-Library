@@ -1,0 +1,19 @@
+[debug] [2021-04-06T06:22:19.767Z] ----------------------------------------------------------------------
+[debug] [2021-04-06T06:22:19.769Z] Command:       /usr/bin/node /usr/bin/firebase login
+[debug] [2021-04-06T06:22:19.769Z] CLI Version:   9.8.0
+[debug] [2021-04-06T06:22:19.769Z] Platform:      linux
+[debug] [2021-04-06T06:22:19.769Z] Node Version:  v14.16.0
+[debug] [2021-04-06T06:22:19.770Z] Time:          Tue Apr 06 2021 06:22:19 GMT+0000 (Coordinated Universal Time)
+[debug] [2021-04-06T06:22:19.770Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-04-06T06:22:19.772Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[info] i  Firebase optionally collects CLI usage and error reporting information to help improve our products. Data is collected in accordance with Google's privacy policy (https://policies.google.com/privacy) and is not used to identify you.
+ 
+[debug] [2021-04-06T06:22:19.904Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2021-04-06T06:22:19.905Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[info] i  To change your data collection preference at any time, run `firebase logout` and log in again. 
+[info] 
+[info] Visit this URL on this device to log in:
+[info] https://accounts.google.com/o/oauth2/auth?client_id=563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com&scope=email%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloudplatformprojects.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ffirebase%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform&response_type=code&state=458802740&redirect_uri=http%3A%2F%2Flocalhost%3A9005
+[info] 
+[info] Waiting for authentication...

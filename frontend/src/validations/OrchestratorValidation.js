@@ -5,7 +5,7 @@ export const OrchestratorSchema = yup.object().shape({
   initialDelay: yup.number().integer().positive().moreThan(-1),
   fallbackTaskUrl: yup.string().url().required("Required!"),
   timeDelayForConditionCheck: yup.number().integer().positive().moreThan(-1),
-  conditionCheckRetries: yup.number().integer().positive().moreThan(-1),
+  conditionCheckRetries: yup.number().integer().positive().moreThan(-1).max(100),
   timeDelayBetweenRetries: yup.number().integer().positive().moreThan(-1),
   numberofTasks: yup.number().integer().positive().moreThan(1),
 });

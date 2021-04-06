@@ -1,3 +1,4 @@
+//Imports
 const express = require("express");
 const cors = require("cors");
 var kafka = require("kafka-node");
@@ -10,6 +11,7 @@ const PORT = process.env.PORT || 8081;
 app.use(cors());
 app.use(express.json());
 
+//Setting kafka variables
 const defaultTopicName = "scheduler-task";
 const kafkaHost = process.env.KAFKA_URL;
 
@@ -34,6 +36,7 @@ const producer = new kafka.HighLevelProducer(client);
 producer.on("ready", function () {
   console.log("Kafka Producer is connected and ready");
 
+  //Route which sends the id to consumer of Task Runner
   app.get("/", (req, res) => {
     const id = req.query.id;
     const type = req.query.type;

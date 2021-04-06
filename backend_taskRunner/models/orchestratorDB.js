@@ -17,7 +17,7 @@ const orchestratorSchema = new mongoose.Schema({
     type: Array,
     required: true,
   },
-  startTime: {
+  endTime: {
     type: Array,
     required: true,
   },
@@ -62,6 +62,10 @@ const orchestratorSchema = new mongoose.Schema({
     required: true,
   },
   numberOfTasks: {
+    type: Number,
+    required: true,
+  },
+  initialRetryCount: {
     type: Number,
     required: true,
   },

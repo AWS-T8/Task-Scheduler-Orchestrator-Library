@@ -1,4 +1,4 @@
-#  Dockerfile for Node Express Backend
+#  Dockerfile for Ubuntu
 FROM ubuntu
 
 # Create App Directory

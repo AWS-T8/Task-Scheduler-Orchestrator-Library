@@ -9,6 +9,9 @@ const Task = ({
   Status,
   onCancelHandler,
   toggleModal,
+  retryCount,
+  retryAfter,
+  initialRetryCount,
 }) => {
   let color;
   if (Status === "scheduled") color = "#3B82F6";
@@ -32,6 +35,15 @@ const Task = ({
             <TextTruncate line={1} element="span" truncateText="…" text={URL} />
           </div>
           <p className="mt-1 font-light text-sm font-light">Status: {Status}</p>
+          <p className="mt-1 font-light text-sm font-light">
+            Retries Done: {initialRetryCount - retryCount}
+          </p>
+          <p className="mt-1 font-light text-sm font-light">
+            Retries Left: {retryCount}
+          </p>
+          <p className="mt-1 font-light text-sm font-light">
+            Retry Time: {retryAfter}
+          </p>
         </div>
         <div className="flex flex-col justify-between">
           <button
