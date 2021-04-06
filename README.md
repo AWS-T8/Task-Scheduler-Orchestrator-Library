@@ -14,21 +14,14 @@ AWS-T8 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="28" viewBox="0
 
 </p>
 
-<br></br>
-
 ## Introduction
-<hr>
 The aim of our project is to create a Task Scheduler, that takes in a task in the form of a link to AWS lambda function & executes it on the specified time, & an Orchestrator that can schedule an orchestration. The orchestrator schedules a set of tasks collectively. These tasks are executed in a sequential manner, & after the successful execution of each task a condition check task is executed.
  <br/>
 Why do we need this? <br/>
 Basically companies have multiple workflows that consist of a set of asynchronous tasks that need to be scheduled and executed based on events or other triggers. This is where a task orchestrator and scheduler comes in handy. <br/>
 Here we expose an API through which users can schedule the tasks & modify them.
 
-
-<br></br>
-
 ## Key Features
-<hr>
 
 * Secure API Authorization using JWT
 * Takes in Lambda URL & schedules it on the specified time.
@@ -39,10 +32,7 @@ Here we expose an API through which users can schedule the tasks & modify them.
 * Users can cancel and modify the orchestration before the start of it’s execution.
 * Supports creation of Lambda functions using regular java or python functions. Returns the trigger URL of the created lambda function in response & schedules it.
 
-<br></br>
-
 ## How To Use
-<hr>
 
 To clone and run this application, you'll need [Git](https://git-scm.com) and [Docker](https://www.docker.com/products/docker-desktop). From your command line:
 ```bash
@@ -62,10 +52,7 @@ $ sudo ./start.sh
 $ sudo ./stop.sh
 ```
 
-<br></br>
-
 ## Tech Stack
-<hr>
 
 * Frontend
   - Language - JavaScript
@@ -83,5 +70,3 @@ $ sudo ./stop.sh
 
 
 ## [Complete Documentation](https://docs.google.com/document/d/1Bhax3or9FEDsO5VVvSC2KEXrrg6DDOS7OGVB39NcO_Y/edit)
-<hr>
-
