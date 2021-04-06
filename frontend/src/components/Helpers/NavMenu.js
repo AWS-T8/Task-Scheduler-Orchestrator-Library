@@ -29,7 +29,7 @@ const NavMenu = ({ onLogoutHandler, path }) => {
     <div className="mb-4 flex flex-col">
       <button
         type="button"
-        className="flex self-stretch justify-center focus:outline-none text-blue-600 text-xl py-2.5 px-5 rounded-md border border-blue-600 hover:bg-blue-50 flex items-center"
+        className="flex justify-center focus:outline-none text-blue-600 text-xl py-1 px-1 rounded-md border border-blue-600 hover:bg-blue-50 flex items-center"
         onClick={toggleShowMenu}
       >
         <div className="px-1.5">

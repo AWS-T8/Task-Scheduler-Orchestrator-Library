@@ -159,7 +159,7 @@ const CreateOrchestrator = (props) => {
                     <div className="flex flex-col">
                       <label className="flex flex-col mt-2 py-1 px-1 w-full font-semibold text-500 text-lg">
                         <span>Initial Delay</span>
-                        <span className="text-xs font-light">
+                        <span className="text-sm text-gray-500 font-medium">
                           Time in ms after which first task will run
                         </span>
                       </label>
@@ -179,7 +179,7 @@ const CreateOrchestrator = (props) => {
                     <div className="flex flex-col">
                       <label className="flex flex-col mt-2 py-1 px-1 w-full font-semibold text-500 text-lg">
                         <span>Condition Check Task Url</span>
-                        <span className="text-xs font-light">
+                        <span className="text-sm text-gray-500 font-medium">
                           Condition check will run after success of each task
                         </span>
                       </label>
@@ -199,7 +199,7 @@ const CreateOrchestrator = (props) => {
                     <div className="flex flex-col">
                       <label className="flex flex-col mt-2 py-1 px-1 w-full font-semibold text-500 text-lg">
                         <span>Condition Check Retries</span>
-                        <span className="text-xs font-light">
+                        <span className="text-sm text-gray-500 font-medium">
                           {`Number of retries if condition check fails (<=100)`}
                         </span>
                       </label>
@@ -219,7 +219,7 @@ const CreateOrchestrator = (props) => {
                     <div className="flex flex-col">
                       <label className="flex flex-col mt-2 py-1 px-1 w-full font-semibold text-500 text-lg">
                         <span>Fallback Task Url</span>
-                        <span className="text-xs font-light">
+                        <span className="text-sm text-gray-500 font-medium">
                           Fallback will run if all retries of condition check
                           fail
                         </span>
@@ -240,9 +240,9 @@ const CreateOrchestrator = (props) => {
                     <div className="flex flex-col">
                       <label className="flex flex-col mt-2 py-1 px-1 w-full font-semibold text-500 text-lg">
                         <span>Time Delay For Condition Check</span>
-                        <span className="text-xs font-light">
-                          Time in ms after which condition check will be run upon
-                          success of each task
+                        <span className="text-sm text-gray-500 font-medium">
+                          Time in ms after which condition check will be run
+                          upon success of each task
                         </span>
                       </label>
                       <input
@@ -261,7 +261,7 @@ const CreateOrchestrator = (props) => {
                     <div className="flex flex-col">
                       <label className="flex flex-col mt-2 py-1 px-1 w-full font-semibold text-500 text-lg">
                         <span>Time Delay Between Retries</span>
-                        <span className="text-xs font-light">
+                        <span className="text-sm text-gray-500 font-medium">
                           Time between each retry of condition check
                         </span>
                       </label>
