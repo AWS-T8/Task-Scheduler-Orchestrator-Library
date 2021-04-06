@@ -43,14 +43,20 @@ $ git clone https://github.com/Crio-Winter-of-Doing-2021/AWS-T8.git
 $ cd AWS-T8
 
 # To create the docker images
+$ chmod +x setup.sh
 $ sudo ./setup.sh 
 
 # To start the scheduler & orchestrator(run docker images as containers) 
+$ chmod +x start.sh
 $ sudo ./start.sh
 
 # To stop the docker images
+$ chmod +x stop.sh
 $ sudo ./stop.sh
 ```
+
+API runs on port : 3000 <br>
+Frontend runs on port : 3001
 
 ## Tech Stack
 
