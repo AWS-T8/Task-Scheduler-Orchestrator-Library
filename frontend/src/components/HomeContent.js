@@ -17,24 +17,36 @@ const Content = (props) => {
           An open source task orchestrator & scheduler library to schedule AWS
           lambda functions.
         </p>
-        <div className="flex space-x-1">
-          <div className="inline-flex">
-            <Link to="/createTask">
-              <button className="mt-10 mb-5 w-full sm:w-full md:w-full lg:w-full bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-                Create Task
-              </button>
-            </Link>
-          </div>
-          <div className="inline-flex">
-            <Link to="/createOrchestration">
-              <button className="mt-10 ml-5 w-full sm:w-full md:w-full lg:w-full bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-                Create Orchestration
-              </button>
-            </Link>
+        <div className="mt-10">
+          <p className="text-lg sm:w-2/3 font-normal">
+            Start by creating:
+          </p>
+          <div className="flex flex-col sm:flex-row justify-between w-2/3 lg:w-1/2 xl:w-1/3">
+            <div>
+              <Link to="/createTask">
+                <button className="mt-4 md:mb-5 mr-2 w-full sm:w-full md:w-full lg:w-full bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                  Task
+                </button>
+              </Link>
+            </div>
+            <div>
+              <Link to="/createOrchestration">
+                <button className="mt-4 md:mb-5 w-full mr-2 sm:w-full md:w-full lg:w-full bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                  Orchestration
+                </button>
+              </Link>
+            </div>
+            <div>
+              <Link to="/create-lambda">
+                <button className="mt-4 w-full sm:w-full mr-2 md:w-full lg:w-full bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                  Lambda
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
-      <div className="mt-10 w-1/3 min-h-full hidden sm:inline">
+      <div className="mt-10 w-1/3 min-h-full hidden md:inline self-center">
         <SmoothImage
           src={HomeImage}
           alt="a nice image of clock"

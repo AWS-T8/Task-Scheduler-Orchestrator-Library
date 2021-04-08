@@ -13,6 +13,8 @@ const NavMenu = ({ onLogoutHandler, path }) => {
       history.push("/tasks");
     } else if (from === "orch") {
       history.push("/orchestrations");
+    } else if (from === "lambda") {
+      history.push("/my-lambdas");
     }
   };
 
@@ -62,6 +64,17 @@ const NavMenu = ({ onLogoutHandler, path }) => {
                 style={path === "/orchestrations" ? activeStyle : null}
               >
                 <Link to="/orchestrations">Orchestrations</Link>
+              </li>
+            </div>
+            <div
+              className="cursor-pointer"
+              onClick={() => toggleShowMenu("lambda")}
+            >
+              <li
+                className="block p-4 border-gray-200 hover:border-blue-500 hover:bg-gray-200 border-r-4"
+                style={path === "/my-lambdas" ? activeStyle : null}
+              >
+                <Link to="/my-lambdas">My Lambdas</Link>
               </li>
             </div>
 

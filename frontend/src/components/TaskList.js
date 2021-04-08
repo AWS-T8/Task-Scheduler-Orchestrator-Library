@@ -223,7 +223,7 @@ const TaskList = () => {
 										<p>Show Status:</p>
 									</div>
 									<Dropdown
-										statusList={[
+										list={[
 											'All',
 											'Scheduled',
 											'Completed',
@@ -231,10 +231,10 @@ const TaskList = () => {
 											'Running',
 											'Cancelled',
 										]}
-										onStatusChangedHandler={
+										onChangeHandler={
 											onStatusChangedHandler
 										}
-										dispStatus={dispStatus}
+										displayStatus={dispStatus}
 									/>
 								</div>
 								<div className='flex justify-between mb-4'>

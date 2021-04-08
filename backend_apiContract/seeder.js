@@ -7,6 +7,7 @@ const dotenv = require("dotenv");
 const testData = require("./testData.js");
 const Task = require("./models/taskDB.js");
 const User = require("./models/userDB");
+const Lambda = require("./models/lambdaDB");
 const connectDB = require("./configure/db.js");
 dotenv.config();
 const Orchestrator = require("./models/orchestratorDB");
@@ -29,6 +30,7 @@ const destroyData = async () => {
   try {
     await Task.deleteMany();
     await User.deleteMany();
+    await Lambda.deleteMany();
     await Orchestrator.deleteMany();
     console.log("Data Destroyed!");
     process.exit();

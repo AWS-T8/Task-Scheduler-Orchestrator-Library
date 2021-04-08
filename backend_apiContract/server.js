@@ -3,6 +3,7 @@ require("dotenv").config({ path: "./.env" });
 const express = require("express");
 const cors = require("cors");
 const kafka = require("kafka-node");
+const upload = require("express-fileupload");
 
 const app = express();
 
@@ -51,6 +52,7 @@ producer.on("ready", function () {
   connectDB();
 
   app.use(express.json());
+  app.use(upload());
 
   //Setting rate limiter
   if (process.env.TEST === "server") {
@@ -75,6 +77,9 @@ producer.on("ready", function () {
   });
 
   // Routes
+  const setLambdaUrl = require("./controllers/lambdaControllers").setLambdaUrl;
+  app.use("/api/create/:key", setLambdaUrl);
+
   const userRouter = require("./routes/user");
   app.use("/api/user", userRouter);
 
@@ -98,6 +103,9 @@ producer.on("ready", function () {
 
   const tasksRouter = require("./routes/tasks");
   app.use("/api/tasks", tasksRouter);
+
+  const lambdaRouter = require("./routes/lambda");
+  app.use("/api/lambda", lambdaRouter);
 
   const orchestratorRouter = require("./routes/orchestrator");
   app.use("/api/orchestrator", orchestratorRouter);

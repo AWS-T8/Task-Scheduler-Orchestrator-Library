@@ -64,6 +64,8 @@ exports.login = async (req, res) => {
           currUser,
           process.env.ACCESS_TOKEN_SECRET
         );
+        // New change
+        // res.cookie("token", token, { httpOnly: true });
         //Return JWT token
         res.status(200).json({ accessToken: accessToken });
       } else {

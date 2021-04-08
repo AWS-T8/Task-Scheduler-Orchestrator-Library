@@ -1,6 +1,6 @@
 import React from "react";
 
-const Dropdown = ({ statusList, onStatusChangedHandler, dispStatus }) => {
+const Dropdown = ({ list, onChangeHandler, displayStatus }) => {
   return (
     <div className="relative inline-flex">
       <svg
@@ -15,11 +15,11 @@ const Dropdown = ({ statusList, onStatusChangedHandler, dispStatus }) => {
       </svg>
       <select
         className="border border-gray-600 rounded-md h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none"
-        onChange={(e) => onStatusChangedHandler(e.target.value)}
-        value={dispStatus}
+        onChange={(e) => onChangeHandler(e.target.value)}
+        value={displayStatus}
       >
-        {statusList.map((status) => (
-          <option key={status}>{status}</option>
+        {list.map((item) => (
+          <option key={item}>{item}</option>
         ))}
       </select>
     </div>

@@ -151,7 +151,7 @@ const OrchestrationList = () => {
                 conditionCheckTaskUrl={orchestration.conditionCheckTaskUrl}
                 fallbackTaskUrl={orchestration.fallbackTaskUrl}
                 conditionCheckRetries={orchestration.conditionCheckRetries}
-                initialRetryCount= {orchestration.initialRetryCount}
+                initialRetryCount={orchestration.initialRetryCount}
                 numberOfTasks={orchestration.numberOfTasks}
                 timeDelayBetweenRetries={orchestration.timeDelayBetweenRetries}
                 timeDelayForConditionCheck={
@@ -237,7 +237,7 @@ const OrchestrationList = () => {
                     <p>Show Status:</p>
                   </div>
                   <Dropdown
-                    statusList={[
+                    list={[
                       "All",
                       "Scheduled",
                       "Completed",
@@ -245,8 +245,8 @@ const OrchestrationList = () => {
                       "Running",
                       "Cancelled",
                     ]}
-                    onStatusChangedHandler={onStatusChangedHandler}
-                    dispStatus={dispStatus}
+                    onChangeHandler={onStatusChangedHandler}
+                    displayStatus={dispStatus}
                   />
                 </div>
                 <div className="flex justify-between mb-4">
