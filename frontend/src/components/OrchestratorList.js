@@ -206,7 +206,7 @@ const OrchestrationList = () => {
           ></img>
         </div>
       ) : (
-        <div>
+        <div className="min-h-screen">
           {loading ? (
             <div className="self-center mt-28 md:mt-4 flex-grow flex flex-col md:flex-row mx-8 sm:mx-16 justify-center mb-4">
               <img

@@ -159,13 +159,7 @@ const CreateLambda = () => {
                       <span>Runtime</span>
                     </label>
                     <Dropdown
-                      list={[
-                        "python3.8",
-                        "nodejs14.x",
-                        "nodejs12.x",
-                        "java11",
-                        "java8",
-                      ]}
+                      list={["python3.8", "nodejs14.x", "nodejs12.x"]}
                       onChangeHandler={onRuntimeChangeHandler}
                       displayStatus={runtime}
                     />
