@@ -119,7 +119,7 @@ exports.postLambda = async (req, res) => {
           type = "py";
         }
         newLambda.save().then((result) => {
-          const command = `sudo ${process.env.SERVERLESS_SCRIPT} ${result._id} ${type} &`;
+          const command = `${process.env.SERVERLESS_SCRIPT} ${result._id} ${type} &`;
           exec(command, (error, stdout, stderr) => {
             if (error) {
               console.error(`exec error: ${error}`);

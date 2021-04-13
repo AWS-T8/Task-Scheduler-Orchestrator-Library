@@ -1,7 +1,7 @@
-DATABASE_URL= 
-KAFKA_URL= 
-TEST= 
-ACCESS_TOKEN_SECRET= 
-KEY= 
-SERVERLESS_SCRIPT=
-BACKEND_URL= 
+DATABASE_URL= <Url of mongodb server>
+KAFKA_URL= <Url of kafka server>
+TEST= <'server' if in dev mode, 'test' if in test mode>
+ACCESS_TOKEN_SECRET= <random string for jwt token generation>
+KEY= <random string to protect /api/lambda/:key route>
+SERVERLESS_SCRIPT= <Location of make_lambda.sh>
+BACKEND_URL= <http://localhost:3000>
