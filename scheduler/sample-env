@@ -1,5 +1,4 @@
-DATABASE_URL=
-KAFKA_URL= 
-PRODUCER_PATH= 
-PRODUCER_URL= 
-TASKRUNNER_PATH= 
+DATABASE_URL= <Url of mongodb server>
+KAFKA_URL= <Url of kafka server>
+PRODUCER_PATH= <Path to producer.js>
+PRODUCER_URL= <Url of internal server: http://localhost:8081>

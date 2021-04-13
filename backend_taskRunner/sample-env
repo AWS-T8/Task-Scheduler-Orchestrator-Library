@@ -1,5 +1,5 @@
-DATABASE_URL= 
-OUTPUT_PATH=
-TEST_API= 
-KAFKA_URL= 
-SERVER_URL= 
+DATABASE_URL= <Url of mongodb server>
+OUTPUT_PATH= <Path to logs folder>
+TEST_API= <Dummy api to test the taskRunner script>
+KAFKA_URL= <Url of kafka server>
+SERVER_URL= <Url of internal server: http://localhost:8082>
