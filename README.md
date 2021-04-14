@@ -12,7 +12,7 @@ AWS-T8 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="28" viewBox="0
   <a href="#tech-stack">Tech Stack</a> •
   <a href="#documentation">Documentation </a> •
   <a href="#video">Video </a> •
-  <a href="#demo">Demo</a>
+  <a href="#snapshots">Snapshots</a>
 </p>
 
 ## Introduction
@@ -90,7 +90,7 @@ $ sudo ./stop.sh
 
 <div align="center">
 
-## DEMO
+## Snapshots
 
 ## Schedule a Task
 
