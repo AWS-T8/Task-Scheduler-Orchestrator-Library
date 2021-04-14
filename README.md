@@ -31,7 +31,7 @@ Here we expose an API through which users can schedule the tasks & modify them.
 - Retries task specified number of times upon failure of Lambda function (4xx or 5xx response code).
 - Supports creation of orchestrations for any number of tasks.
 - Users can cancel and modify the orchestration before the start of it’s execution.
-- Supports creation of Lambda functions using regular java or python functions. Returns the trigger URL of the created lambda function in response & schedules it.
+- Supports creation of Lambda functions using regular javascript or python functions. Returns the trigger URL of the created lambda function in response & schedules it.
 
 ## How To Use
 
