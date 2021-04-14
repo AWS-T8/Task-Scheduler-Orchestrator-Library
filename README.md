@@ -10,7 +10,7 @@ AWS-T8 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="28" viewBox="0
   <a href="#key-features">Key Features</a> •
   <a href="#how-to-use">How To Use</a> •
   <a href="#tech-stack">Tech Stack</a> •
-  <a href="#complete-documentation">Documentation</a> •
+  <a href="#documentation-and-video">Documentation & Video</a> •
   <a href="#demo">Demo</a>
 </p>
 
@@ -83,7 +83,7 @@ $ sudo ./stop.sh
   - [MongoDB](https://www.mongodb.com/)
   - [Docker](https://www.docker.com/)
 
-## [Complete Documentation](https://docs.google.com/document/d/1Bhax3or9FEDsO5VVvSC2KEXrrg6DDOS7OGVB39NcO_Y/edit)
+## [Documentation](https://docs.google.com/document/d/1Bhax3or9FEDsO5VVvSC2KEXrrg6DDOS7OGVB39NcO_Y/edit) and  [Video](https://drive.google.com/file/d/1f9guL8U9r3a5WTgl0gxXvD4O2CA-FpBu/view)
 
 <div align="center">
 
